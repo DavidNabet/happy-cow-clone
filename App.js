@@ -3,10 +3,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
-import HomeScreen from "./containers/HomeScreen";
-import ProfileScreen from "./containers/ProfileScreen";
-import SettingsScreen from "./containers/SettingsScreen";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { colors } from "./assets/js/colors";
+import RestaurantsScreen from "./containers/RestaurantsScreen";
+import FavoritesScreen from "./containers/FavoritesScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -19,59 +19,68 @@ export default function App() {
           {() => (
             <Tab.Navigator
               tabBarOptions={{
-                activeTintColor: "tomato",
+                activeTintColor: colors.purpleContainer,
                 inactiveTintColor: "gray",
               }}
             >
               <Tab.Screen
                 name="Home"
                 options={{
-                  tabBarLabel: "Home",
+                  tabBarLabel: "Explorer",
                   tabBarIcon: ({ color, size }) => (
-                    <Ionicons name={"ios-home"} size={size} color={color} />
+                    <Ionicons
+                      name={"ios-search-sharp"}
+                      size={size}
+                      color={color}
+                    />
                   ),
                 }}
               >
                 {() => (
                   <Stack.Navigator>
                     <Stack.Screen
-                      name="Home"
+                      name="Restaurants"
                       options={{
-                        title: "My App",
-                        headerStyle: { backgroundColor: "red" },
+                        title: "Happy Cow",
+                        headerStyle: {
+                          backgroundColor: colors.purpleContainer,
+                        },
                         headerTitleStyle: { color: "white" },
+                        headerTitleAlign: "center",
                       }}
                     >
-                      {() => <HomeScreen />}
-                    </Stack.Screen>
-
-                    <Stack.Screen
-                      name="Profile"
-                      options={{
-                        title: "User Profile",
-                      }}
-                    >
-                      {() => <ProfileScreen />}
+                      {(props) => <RestaurantsScreen {...props} />}
                     </Stack.Screen>
                   </Stack.Navigator>
                 )}
               </Tab.Screen>
               <Tab.Screen
-                name="Settings"
+                name="Favoris"
                 options={{
-                  tabBarLabel: "Settings",
+                  tabBarLabel: "Favoris",
                   tabBarIcon: ({ color, size }) => (
-                    <Ionicons name={"ios-options"} size={size} color={color} />
+                    <MaterialIcons
+                      name="favorite-outline"
+                      size={size}
+                      color={color}
+                    />
                   ),
                 }}
               >
                 {() => (
                   <Stack.Navigator>
                     <Stack.Screen
-                      name="Settings"
-                      options={{ title: "Settings", tabBarLabel: "Settings" }}
+                      name="Favoris"
+                      options={{
+                        title: "Happy Cow",
+                        headerStyle: {
+                          backgroundColor: colors.purpleContainer,
+                        },
+                        headerTitleStyle: { color: "white" },
+                        headerTitleAlign: "center",
+                      }}
                     >
-                      {() => <SettingsScreen setToken={setToken} />}
+                      {(props) => <FavoritesScreen {...props} />}
                     </Stack.Screen>
                   </Stack.Navigator>
                 )}
