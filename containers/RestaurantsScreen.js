@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { colors } from "../assets/js/colors";
 import {
   View,
@@ -13,27 +13,8 @@ import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import RestaurantsCard from "../components/RestaurantsCard";
 
-export default function RestaurantsScreen() {
-  const [data, setData] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-  let type = "vegan";
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://10.0.2.2:3200/restaurants", {
-          params: {
-            type: type,
-          },
-        });
-        // console.log(response);
-        setIsLoading(false);
-        setData(response.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchData();
-  }, []);
+export default function RestaurantsScreen({ data, isLoading }) {
+  const [search, setSearch] = useState("");
 
   return isLoading ? (
     <ActivityIndicator

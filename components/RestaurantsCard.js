@@ -27,7 +27,7 @@ export default function RestaurantsCard({ data }) {
               <Text style={styles.text}></Text>
             </View>
             <View style={styles.sub_block}>
-              <Text>Hello</Text>
+              <Text>Time</Text>
               <Price price={data.price} />
             </View>
             <View style={styles.block_last_row}>

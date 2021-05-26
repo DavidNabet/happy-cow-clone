@@ -1,7 +1,7 @@
 export const colors = {
   purpleContainer: "#6e3fac",
   purpleStatusBar: "#523383",
-  otherOptions: "#DC6362",
+  vegOptions: "#DC6362",
   vegetarien: "#8B2092",
   vegan: "#21860C",
   yellowRating: "#FBCC04",
