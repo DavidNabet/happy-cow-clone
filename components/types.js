@@ -1,0 +1,98 @@
+export default [
+  {
+    type: "vegan",
+    icon: "../assets/icon/vegan.svg",
+    name: "Vegan",
+    category: 0,
+  },
+  {
+    type: "vegetarian",
+    icon: "../assets/icon/vegetarian.svg",
+    name: "Vegetarian",
+    category: 0,
+  },
+  {
+    type: "veg-options",
+    icon: "../assets/icon/veg-options.svg",
+    name: "VegOptions",
+    category: 0,
+  },
+  {
+    type: "Health Store",
+    category: 1,
+    icon: "../assets/icon/health-store.svg",
+    name: "HealthStore",
+  },
+  {
+    type: "Veg Store",
+    category: 2,
+    icon: "../assets/icon/veg-store.svg",
+    name: "VegStore",
+  },
+  {
+    type: "Bakery",
+    category: 3,
+    icon: "../assets/icon/bakery.svg",
+    name: "Bakery",
+  },
+  {
+    type: "B_B",
+    category: 4,
+    icon: "../assets/icon/b&b-hotels.svg",
+    name: "B_B",
+  },
+  {
+    type: "Delivery",
+    category: 5,
+    icon: "../assets/icon/delivery.svg",
+    name: "Delivery",
+  },
+  {
+    type: "Catering",
+    category: 6,
+    icon: "../assets/icon/catering.svg",
+    name: "Catering",
+  },
+  {
+    type: "Organization",
+    category: 7,
+    icon: "../assets/icon/organization.svg",
+    name: "Organization",
+  },
+  {
+    type: "Food Truck",
+    category: 10,
+    icon: "../assets/icon/food-truck.svg",
+    name: "FoodTruck",
+  },
+  {
+    type: "Market Vendor",
+    category: 11,
+    icon: "../assets/icon/market-vendor.svg",
+    name: "MarketVendor",
+  },
+  {
+    type: "Ice Cream",
+    category: 12,
+    icon: "../assets/icon/ice-cream.svg",
+    name: "IceCream",
+  },
+  {
+    type: "Juice Bar",
+    category: 13,
+    icon: "../assets/icon/juice-bar.svg",
+    name: "JuiceBar",
+  },
+  {
+    type: "Professional",
+    category: 14,
+    icon: "../assets/icon/vegan-professional.svg",
+    name: "Professional",
+  },
+  {
+    type: "Other",
+    category: 99,
+    icon: "../assets/icon/other.svg",
+    name: "Other",
+  },
+];

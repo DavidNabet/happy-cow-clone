@@ -3,10 +3,20 @@ import { colors, border } from "../assets/js/colors";
 import { Text, View, StyleSheet, Image } from "react-native";
 import Rating from "./Rating";
 import Price from "./Price";
+import SvgUri from "react-native-svg-uri";
+import types from "./types";
 
 export default function RestaurantsCard({ data }) {
-  const openClosed = () => {};
-  //   console.log(data.pictures);
+  // const openClosed = () => {};
+
+  // const iconFiltered = () => {
+  //   return types.filter((el) => {
+  //     if (el.type === data.type) {
+  //       return <SvgUri source={require(el.icon)} width={20} height={20} />;
+  //     }
+  //   });
+  // };
+
   return (
     <View style={styles.wrapper}>
       {data.pictures.length > 0 && (
@@ -21,6 +31,14 @@ export default function RestaurantsCard({ data }) {
           <View style={styles.block}>
             <View style={styles.sub_block}>
               <Text style={styles.title}>{data.name}</Text>
+              <Text>{data.type}</Text>
+              {/* {types.filter((el) => {
+                if (el.type === data.type) {
+                  return (
+                    <SvgUri source={require(el.icon)} width={20} height={20} />
+                  );
+                }
+              })} */}
             </View>
             <View style={styles.sub_block}>
               <Rating rating={Number(data.rating)} />

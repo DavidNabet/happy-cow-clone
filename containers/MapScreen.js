@@ -8,67 +8,14 @@ import {
   ActivityIndicator,
   Text,
 } from "react-native";
-import { haversine } from "../utils/distance";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { colors, border } from "../assets/js/colors";
-import * as Location from "expo-location";
 
-export default function MapScreen({ data }) {
+export default function MapScreen({ data, isLoading }) {
   //   const { data } = useRoute();
   //   console.log(data);
-  const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [coordinate, setCoordinate] = useState({});
-
-  const getData = async (region) => {
-    const position = {
-      latitude: region.latitude,
-      longitude: region.longitude,
-    };
-
-    // let result = data.location
-
-    return haversine(position, data, 3);
-  };
-
-  useEffect(() => {
-    const getPermissionAndLocation = async () => {
-      try {
-        setErrors(false);
-
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        //   let response;
-
-        if (status !== "granted") {
-          setErrors(true);
-          setErrorMessage(
-            "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
-          );
-        }
-
-        const { coords } = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Highest,
-        });
-
-        const obj = {
-          latitude: coords.latitude,
-          longitude: coords.longitude,
-        };
-
-        // console.log(obj);
-
-        setIsLoading(false);
-
-        setCoordinate(obj);
-      } catch (err) {
-        alert("An error has occured");
-        console.log("ERREUR MESSAGE ", err.message);
-      }
-    };
-
-    getPermissionAndLocation();
-  }, []);
 
   return (
     <View style={styles.container}>
