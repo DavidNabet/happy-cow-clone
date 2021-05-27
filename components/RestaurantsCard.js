@@ -31,14 +31,14 @@ export default function RestaurantsCard({ data }) {
           <View style={styles.block}>
             <View style={styles.sub_block}>
               <Text style={styles.title}>{data.name}</Text>
-              <Text>{data.type}</Text>
-              {/* {types.filter((el) => {
+              {/* <Text>{data.type}</Text> */}
+              {types.filter((el) => {
                 if (el.type === data.type) {
                   return (
                     <SvgUri source={require(el.icon)} width={20} height={20} />
                   );
                 }
-              })} */}
+              })}
             </View>
             <View style={styles.sub_block}>
               <Rating rating={Number(data.rating)} />

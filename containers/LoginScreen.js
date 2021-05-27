@@ -9,55 +9,51 @@ import {
 } from "react-native";
 import axios from "axios";
 import { colors, border } from "../assets/js/colors";
-import * as Location from "expo-location";
+// import * as Location from "expo-location";
 
 export default function LoginScreen({ setToken, navigation }) {
   // token: z5x0EKRQhL6rIVF1KmoEtpaDqUZJYALDYaHBa91WF7TiHK9kYigtPs0DbX6SzDt4\
   // id: 60ae4f5f836ee51fa083322c
-  const [coordinate, setCoordinate] = useState();
+  // const [coordinate, setCoordinate] = useState();
   const [email, setEmail] = useState("dax@test.com");
   const [password, setPassword] = useState(""); //pass
   const [errorMessage, setErrorMessage] = useState("");
-  const [errors, setErrors] = useState(false);
-  useEffect(() => {
-    const getPermissionAndLocation = async () => {
-      try {
-        const result = await Location.hasServicesEnabledAsync();
-        if (result.status === "denied") {
-          setErrors(false);
-          const { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== "granted") {
-            setErrors(true);
-            setErrorMessage(
-              "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
-            );
-          }
-          const { coords } = await Location.getCurrentPositionAsync({
-            accuracy: Location.Accuracy.Highest,
-          });
-          const tabCoordinate = [coords.latitude, coords.longitude];
-          // setIsLoading(false);
-          setCoordinate(tabCoordinate);
-        }
-      } catch (err) {
-        alert("An error has occured");
-        console.log("ERREUR MESSAGE ", err.message);
-      }
-    };
+  // const [errors, setErrors] = useState(false);
+  // useEffect(() => {
+  //   const getPermissionAndLocation = async () => {
+  //     try {
+  //       const result = await Location.hasServicesEnabledAsync();
+  //       if (result.status === "denied") {
+  //         setErrors(false);
+  //         const { status } = await Location.requestForegroundPermissionsAsync();
+  //         if (status !== "granted") {
+  //           setErrors(true);
+  //           setErrorMessage(
+  //             "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
+  //           );
+  //         }
+  //         const { coords } = await Location.getCurrentPositionAsync({
+  //           accuracy: Location.Accuracy.Highest,
+  //         });
+  //         const tabCoordinate = [coords.latitude, coords.longitude];
+  //         // setIsLoading(false);
+  //         setCoordinate(tabCoordinate);
+  //       }
+  //     } catch (err) {
+  //       alert("An error has occured");
+  //       console.log("ERREUR MESSAGE ", err.message);
+  //     }
+  //   };
 
-    getPermissionAndLocation();
-  }, []);
+  //   getPermissionAndLocation();
+  // }, []);
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(
-        "http://http://10.0.2.2:3200/user/login",
-        {
-          email: email,
-          password: password,
-          location: coordinate || null,
-        }
-      );
+      const response = await axios.post("http://10.0.2.2:3200/user/login", {
+        email: email,
+        password: password,
+      });
       console.log("response", response);
       if (response.status === 200) {
         alert("Welcome to HappyCow App !");
@@ -102,7 +98,7 @@ export default function LoginScreen({ setToken, navigation }) {
             />
           </View>
           <View style={styles.sign}>
-            {errors && (
+            {<Text>{errorMessage}</Text> && (
               <Text style={{ color: colors.errorMessage, fontSize: 12 }}>
                 {errorMessage}
               </Text>
@@ -138,7 +134,9 @@ const styles = StyleSheet.create({
   form: {},
   input: {},
   sign: {},
-  submit: {},
+  submit: {
+    marginBottom: 5,
+  },
   txt_btn: {},
   errorMessage: {},
 });
