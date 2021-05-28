@@ -10,6 +10,7 @@ import {
   MaterialIcons,
   FontAwesome5,
   Entypo,
+  Feather,
 } from "@expo/vector-icons";
 import { colors } from "./assets/js/colors";
 import RestaurantsScreen from "./containers/RestaurantsScreen";
@@ -122,7 +123,7 @@ export default function App() {
         console.log("ERREUR MESSAGE ", err.message);
       }
     };
-    if (!isLoading || userTokenAndId || userLocation) {
+    if ((!isLoading && userLocation) || userTokenAndId) {
       getPermissionAndLocation();
     }
   }, [isLoading]);
@@ -218,6 +219,7 @@ export default function App() {
                         name="AroundMe"
                         options={{
                           title: "Happy Cow",
+
                           headerStyle: {
                             backgroundColor: colors.purpleContainer,
                           },

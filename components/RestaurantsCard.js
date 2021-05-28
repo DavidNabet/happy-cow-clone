@@ -20,7 +20,9 @@ export default function RestaurantsCard({ data }) {
           </View>
           <View style={styles.block}>
             <View style={styles.sub_block}>
-              <Text style={styles.title}>{data.name}</Text>
+              <Text style={styles.title} numberOfLines={1}>
+                {data.name}
+              </Text>
               <FilterImage type={data.type} />
             </View>
             <View style={styles.sub_block}>

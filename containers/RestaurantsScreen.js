@@ -36,6 +36,7 @@ export default function RestaurantsScreen({ errorMessageLocation }) {
           {
             params: {
               type: typeEl,
+              rayon: 3,
             },
           }
         );
@@ -78,6 +79,8 @@ export default function RestaurantsScreen({ errorMessageLocation }) {
       color={colors.purpleContainer}
       style={{ marginTop: 50 }}
     />
+  ) : errorMessageLocation ? (
+    <Text style={styles.error}>{errorMessageLocation}</Text>
   ) : (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" backgroundColor={colors.purpleStatusBar} />
