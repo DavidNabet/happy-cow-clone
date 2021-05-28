@@ -122,7 +122,7 @@ export default function App() {
         console.log("ERREUR MESSAGE ", err.message);
       }
     };
-    if ((!isLoading && userTokenAndId) || userLocation) {
+    if (!isLoading || userTokenAndId || userLocation) {
       getPermissionAndLocation();
     }
   }, [isLoading]);

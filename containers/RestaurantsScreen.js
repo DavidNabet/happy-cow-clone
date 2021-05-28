@@ -88,9 +88,9 @@ export default function RestaurantsScreen({ errorMessageLocation }) {
         filterText={filterText}
       />
       <Filters setTypeEl={setTypeEl} typeEl={typeEl} />
-      {isActive && search ? (
+      {isActive && search !== null ? (
         <FlatList
-          data={data}
+          data={search}
           keyExtractor={(item) => item.placeId.toString()}
           renderItem={({ item }) => <RestaurantsCard data={item} />}
         />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
+  Image,
   Text,
   TextInput,
   View,
@@ -9,6 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { colors, border } from "../assets/js/colors";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function SignupScreen({ setTokenAndId, navigation }) {
   // const [isLoading, setIsLoading] = useState(true);
@@ -59,9 +61,20 @@ export default function SignupScreen({ setTokenAndId, navigation }) {
   };
 
   return (
-    <>
+    <KeyboardAwareScrollView
+      contentContainerStyle={styles.container}
+      enableOnAndroid={true}
+      extraScrollHeight={25}
+    >
       <View style={styles.constainer}>
         <View style={styles.wrapper}>
+          <View style={styles.logo}>
+            <Image
+              source={require("../assets/png/logo-happy-cow.png")}
+              style={{ width: 200, height: 200 }}
+              resizeMode="cover"
+            />
+          </View>
           <View style={styles.form}>
             <TextInput
               style={styles.input}
@@ -104,7 +117,9 @@ export default function SignupScreen({ setTokenAndId, navigation }) {
               style={styles.submit}
               onPress={handleSubmit}
             >
-              <Text style={styles.txt_btn}>S'inscrire</Text>
+              <Text style={[styles.txt_btn, { color: "white" }]}>
+                S'inscrire
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={0.8}
@@ -112,27 +127,71 @@ export default function SignupScreen({ setTokenAndId, navigation }) {
                 navigation.navigate("Login");
               }}
             >
-              <Text style={{ fontSize: 12, color: colors.grey }}>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: colors.grey,
+                }}
+                numberOfLines={1}
+              >
                 Vous avez un compte ? Connectez-vous
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
-    </>
+    </KeyboardAwareScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  constainer: {
-    flex: 1,
+  container: {
+    flexGrow: 1,
     backgroundColor: "white",
   },
-  wrapper: {},
-  form: {},
-  input: {},
-  sign: {},
-  submit: {},
-  txt_btn: {},
-  errorMessage: {},
+  wrapper: {
+    paddingHorizontal: 10,
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    flex: 1,
+  },
+  logo: {
+    alignItems: "center",
+  },
+  form: {
+    width: "100%",
+    paddingHorizontal: 15,
+  },
+  input: {
+    marginVertical: 15,
+    borderBottomColor: colors.red,
+    borderStyle: "solid",
+    borderBottomWidth: 1,
+    lineHeight: 22,
+  },
+  sign: {
+    flexDirection: "column",
+    alignItems: "center",
+    width: "60%",
+  },
+  submit: {
+    width: "90%",
+    paddingVertical: 10,
+    marginVertical: 15,
+    backgroundColor: colors.purpleContainer,
+    borderColor: colors.purpleContainer,
+    borderWidth: 2,
+    borderRadius: 30,
+  },
+  txt_btn: {
+    fontSize: 16,
+    textAlign: "center",
+    color: colors.purpleContainer,
+    fontWeight: "bold",
+  },
+  errorMessage: {
+    color: colors.vegOptions,
+    fontSize: 14,
+  },
 });
