@@ -20,7 +20,10 @@ export default function MapScreen({ userLocation }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://10.0.2.2:3200/restaurants");
+        const response = await axios.get(
+          // "http://10.0.2.2:3200/restaurants",
+          "https://happy-cow-back-project.herokuapp.com/restaurants"
+        );
         console.log(response);
         setIsLoading(false);
         setData(response.data);

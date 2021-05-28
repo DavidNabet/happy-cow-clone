@@ -85,7 +85,8 @@ export default function App() {
 
           try {
             await axios.put(
-              `http://10.0.2.2:3200/user/update/${user.id}`,
+              // `http://10.0.2.2:3200/user/update/${user.id}`,
+              `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
               {
                 location: tabCoordinate,
               },
@@ -121,7 +122,7 @@ export default function App() {
         console.log("ERREUR MESSAGE ", err.message);
       }
     };
-    if (!isLoading && userTokenAndId) {
+    if ((!isLoading && userTokenAndId) || userLocation) {
       getPermissionAndLocation();
     }
   }, [isLoading]);

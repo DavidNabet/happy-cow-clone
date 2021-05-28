@@ -22,10 +22,14 @@ export default function LoginScreen({ setTokenAndId, navigation }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://10.0.2.2:3200/user/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        // "http://10.0.2.2:3200/user/login",
+        "https://happy-cow-back-project.herokuapp.com/user/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
       console.log("response", response);
       if (response.status === 200) {
         alert("Welcome to HappyCow App !");
