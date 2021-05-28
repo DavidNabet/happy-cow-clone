@@ -7,6 +7,7 @@ export const colors = {
   yellowRating: "#FBCC04",
   lightGray: "#F1F1F1",
   grey: "#aaa",
+  black: "#222",
 };
 
 export const border = {

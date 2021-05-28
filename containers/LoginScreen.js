@@ -11,42 +11,14 @@ import axios from "axios";
 import { colors, border } from "../assets/js/colors";
 // import * as Location from "expo-location";
 
-export default function LoginScreen({ setToken, navigation }) {
-  // token: z5x0EKRQhL6rIVF1KmoEtpaDqUZJYALDYaHBa91WF7TiHK9kYigtPs0DbX6SzDt4\
-  // id: 60ae4f5f836ee51fa083322c
+export default function LoginScreen({ setTokenAndId, navigation }) {
+  // token:
+  // id:
   // const [coordinate, setCoordinate] = useState();
-  const [email, setEmail] = useState("dax@test.com");
-  const [password, setPassword] = useState(""); //pass
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   // const [errors, setErrors] = useState(false);
-  // useEffect(() => {
-  //   const getPermissionAndLocation = async () => {
-  //     try {
-  //       const result = await Location.hasServicesEnabledAsync();
-  //       if (result.status === "denied") {
-  //         setErrors(false);
-  //         const { status } = await Location.requestForegroundPermissionsAsync();
-  //         if (status !== "granted") {
-  //           setErrors(true);
-  //           setErrorMessage(
-  //             "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
-  //           );
-  //         }
-  //         const { coords } = await Location.getCurrentPositionAsync({
-  //           accuracy: Location.Accuracy.Highest,
-  //         });
-  //         const tabCoordinate = [coords.latitude, coords.longitude];
-  //         // setIsLoading(false);
-  //         setCoordinate(tabCoordinate);
-  //       }
-  //     } catch (err) {
-  //       alert("An error has occured");
-  //       console.log("ERREUR MESSAGE ", err.message);
-  //     }
-  //   };
-
-  //   getPermissionAndLocation();
-  // }, []);
 
   const handleSubmit = async () => {
     try {
@@ -57,7 +29,11 @@ export default function LoginScreen({ setToken, navigation }) {
       console.log("response", response);
       if (response.status === 200) {
         alert("Welcome to HappyCow App !");
-        setToken(response.data.token);
+        let setResponse = JSON.stringify({
+          token: response.data.token,
+          id: response.data._id,
+        });
+        setTokenAndId(setResponse);
         navigation.navigate("Tab", {
           screen: "Restaurants",
         });
@@ -72,7 +48,7 @@ export default function LoginScreen({ setToken, navigation }) {
         setErrorMessage("Remplissez tous les champs !");
       }
 
-      console.log(e.message);
+      console.log("login ", e.message);
     }
   };
 
@@ -130,12 +106,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  wrapper: {},
+  wrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   form: {},
   input: {},
   sign: {},
   submit: {
-    marginBottom: 5,
+    marginBottom: 20,
+    textAlign: "center",
   },
   txt_btn: {},
   errorMessage: {},

@@ -1,39 +1,53 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, border } from "../assets/js/colors";
-import SvgUri from "react-native-svg-uri";
-// import Vegan from "../assets/icon/vegan.svg";
-// import Vegetarian from "../assets/icon/vegetarian.svg";
-// import VegOptions from "../assets/icon/veg-options.svg";
 
-export default function Filters({}) {
+export default function Filters({ typeEl, setTypeEl }) {
+  // const [isColored, setIsColored] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <TouchableOpacity style={styles.block}>
-          <SvgUri
-            source={require("../assets/icon/vegan.svg")}
-            width={20}
-            height={20}
+        <TouchableOpacity
+          style={[
+            styles.block,
+            typeEl === "vegan" ? styles.green : styles.borderDefault,
+          ]}
+          onPress={() => setTypeEl("vegan")}
+        >
+          <Image
+            source={require("../assets/png/vegan.png")}
+            style={styles.image}
+            resizeMode="cover"
           />
           <Text style={styles.text}>Vegan</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.block}>
-          <SvgUri
-            source={require("../assets/icon/vegetarian.svg")}
-            width={20}
-            height={20}
+        <TouchableOpacity
+          style={[
+            styles.block,
+            typeEl === "vegetarian" ? styles.purple : styles.borderDefault,
+          ]}
+          onPress={() => setTypeEl("vegetarian")}
+        >
+          <Image
+            source={require("../assets/png/vegetarian.png")}
+            style={styles.image}
+            resizeMode="cover"
           />
           <Text style={styles.text}>Végétarien</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.block}>
-          <SvgUri
-            source={require("../assets/icon/veg-options.svg")}
-            width={20}
-            height={20}
+        <TouchableOpacity
+          style={[
+            styles.block,
+            typeEl === "veg-options" ? styles.red : styles.borderDefault,
+          ]}
+          onPress={() => setTypeEl("veg-options")}
+        >
+          <Image
+            source={require("../assets/png/veg-options.png")}
+            style={styles.image}
+            resizeMode="cover"
           />
-
           <Text style={styles.text} numberOfLines={1}>
             Options Végétariennes
           </Text>
@@ -68,6 +82,21 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+  },
+  default: {
+    backgroundColor: "white",
+  },
+  green: {
+    backgroundColor: colors.vegan,
+    color: "white",
+  },
+  purple: {
+    backgroundColor: colors.vegetarien,
+    color: "white",
+  },
+  red: {
+    backgroundColor: colors.vegOptions,
+    color: "white",
   },
   text: {
     paddingTop: 5,

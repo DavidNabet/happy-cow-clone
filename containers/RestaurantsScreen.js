@@ -3,6 +3,7 @@ import axios from "axios";
 import { colors } from "../assets/js/colors";
 import {
   View,
+  Text,
   StyleSheet,
   FlatList,
   ActivityIndicator,
@@ -13,25 +14,24 @@ import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import RestaurantsCard from "../components/RestaurantsCard";
 import Filters from "../components/Filters";
+import types from "../seed/types.json";
 
-export default function RestaurantsScreen({}) {
+export default function RestaurantsScreen({ errorMessageLocation }) {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   // rayon actif
   const [isActive, setIsActive] = useState(false);
   //
-  const [typeEl, setTypeEl] = useState(false);
-  let type = "vegan" || null;
+  const [typeEl, setTypeEl] = useState(null);
+  // let type = "vegan";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://10.0.2.2:3200/restaurants", {
           params: {
-            type: type,
-            // type: typeEl,
-            limit: 30,
+            type: typeEl,
           },
         });
         // console.log(response);
@@ -42,14 +42,7 @@ export default function RestaurantsScreen({}) {
       }
     };
     fetchData();
-  }, []);
-
-  const handleChangeType = (e) => {
-    console.log(e.nativeEvent);
-    category.filter((categorie) => {
-      categorie.type === type;
-    });
-  };
+  }, [typeEl]);
 
   return isLoading ? (
     <ActivityIndicator
@@ -60,7 +53,7 @@ export default function RestaurantsScreen({}) {
   ) : (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" backgroundColor={colors.purpleStatusBar} />
-      <Filters />
+      <Filters setTypeEl={setTypeEl} typeEl={typeEl} />
       <FlatList
         data={data}
         keyExtractor={(item) => item.placeId.toString()}
@@ -77,5 +70,10 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
+  },
+  error: {
+    fontSize: 20,
+    color: colors.vegOptions,
+    fontWeight: "bold",
   },
 });

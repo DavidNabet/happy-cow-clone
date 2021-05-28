@@ -1,0 +1,82 @@
+[
+  {
+    "type": "vegan",
+    "category": 0,
+    "icon": "../assets/png/vegan.png"
+  },
+  {
+    "type": "vegetarian",
+    "category": 0,
+    "icon": "../assets/png/vegetarian.png"
+  },
+  {
+    "type": "veg-options",
+    "category": 0,
+    "icon": "../assets/png/veg-options.png"
+  },
+  {
+    "type": "Health Store",
+    "category": 1,
+    "icon": "../assets/png/health-store.png"
+  },
+  {
+    "type": "Veg Store",
+    "category": 2,
+    "icon": "../assets/png/veg-store.png"
+  },
+  {
+    "type": "Bakery",
+    "category": 3,
+    "icon": "../assets/png/bakery.png"
+  },
+  {
+    "type": "B_B",
+    "category": 4,
+    "icon": "../assets/png/b&b-hotels.png"
+  },
+  {
+    "type": "Delivery",
+    "category": 5,
+    "icon": "../assets/png/delivery.png"
+  },
+  {
+    "type": "Catering",
+    "category": 6,
+    "icon": "../assets/png/catering.png"
+  },
+  {
+    "type": "Organization",
+    "category": 7,
+    "icon": "../assets/png/organization.png"
+  },
+  {
+    "type": "Food Truck",
+    "category": 10,
+    "icon": "../assets/png/food-truck.png"
+  },
+  {
+    "type": "Market Vendor",
+    "category": 11,
+    "icon": "../assets/png/market-vendor.png"
+  },
+  {
+    "type": "Ice Cream",
+    "category": 12,
+    "icon": "../assets/png/ice-cream.png"
+  },
+  {
+    "type": "Juice Bar",
+    "category": 13,
+    "icon": "../assets/png/juice-bar.png"
+  },
+  {
+    "type": "Professional",
+    "category": 14,
+    "icon": "../assets/png/vegan-professional.png"
+  },
+  {
+    "type": "Other",
+    "category": 99,
+    "icon": "../assets/png/other.png"
+  }
+]

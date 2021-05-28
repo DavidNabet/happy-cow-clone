@@ -9,48 +9,14 @@ import {
 } from "react-native";
 import axios from "axios";
 import { colors, border } from "../assets/js/colors";
-import * as Location from "expo-location";
 
-export default function SignupScreen({ setToken, navigation }) {
+export default function SignupScreen({ setTokenAndId, navigation }) {
   // const [isLoading, setIsLoading] = useState(true);
-  const [coordinate, setCoordinate] = useState();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [errorMessageLocation, setErrorMessageLocation] = useState("");
-  const [errors, setErrors] = useState(false);
-
-  useEffect(() => {
-    const getPermissionAndLocation = async () => {
-      try {
-        setErrors(false);
-        const result = await Location.hasServicesEnabledAsync();
-        if (result.status === "granted") {
-          const { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== "granted") {
-            setErrors(true);
-            setErrorMessageLocation(
-              "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
-            );
-          }
-          const { coords } = await Location.getCurrentPositionAsync({
-            accuracy: Location.Accuracy.Highest,
-          });
-          const tabCoordinate = [coords.latitude, coords.longitude];
-          // setIsLoading(false);
-          setCoordinate(tabCoordinate);
-          // console.log(coordinate);
-        }
-      } catch (err) {
-        alert("An error has occured");
-        console.log("ERREUR MESSAGE ", err.message);
-      }
-    };
-
-    getPermissionAndLocation();
-  }, []);
 
   const handleSubmit = async () => {
     try {
@@ -58,14 +24,19 @@ export default function SignupScreen({ setToken, navigation }) {
         email: email,
         username: username,
         password: password,
-        location: coordinate,
       });
 
       console.log("response", response);
       if (response.data) {
         if (response.status === 200) {
           // setErrorMessage("");
-          setToken(response.data.token);
+          alert("Welcome to HappyCow App !");
+
+          let setResponse = JSON.stringify({
+            token: response.data.token,
+            id: response.data._id,
+          });
+          setTokenAndId(setResponse);
           navigation.navigate("Tab", {
             screen: "Restaurants",
           });
@@ -79,7 +50,7 @@ export default function SignupScreen({ setToken, navigation }) {
       if (password !== confirmPassword) {
         setErrorMessage("Le mot de passe doit être identique");
       }
-      console.log("e.message", e.message);
+      console.log("signup ", e.message);
     }
   };
 
@@ -119,12 +90,11 @@ export default function SignupScreen({ setToken, navigation }) {
             />
           </View>
           <View style={styles.sign}>
-            {errors ||
-              (<Text>{errorMessage}</Text> && (
-                <Text style={{ color: colors.vegOptions, fontSize: 12 }}>
-                  {errorMessageLocation || errorMessage}
-                </Text>
-              ))}
+            {<Text>{errorMessage}</Text> && (
+              <Text style={{ color: colors.vegOptions, fontSize: 12 }}>
+                {errorMessage}
+              </Text>
+            )}
             <TouchableOpacity
               activeOpacity={0.8}
               style={styles.submit}

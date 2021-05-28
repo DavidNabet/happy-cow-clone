@@ -5,51 +5,139 @@ import axios from "axios";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialIcons,
+  FontAwesome5,
+  Entypo,
+} from "@expo/vector-icons";
 import { colors } from "./assets/js/colors";
 import RestaurantsScreen from "./containers/RestaurantsScreen";
 import MapScreen from "./containers/MapScreen";
 import FavoritesScreen from "./containers/FavoritesScreen";
 import LoginScreen from "./containers/LoginScreen";
 import SignupScreen from "./containers/SignupScreen";
+import * as Location from "expo-location";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState(null);
+  const [userTokenAndId, setUserTokenAndId] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
+  // const [isLoadingPlace, setIsLoadingPlace] = useState(true);
+  const [errorMessageLocation, setErrorMessageLocation] = useState("");
+  // const [errors, setErrors] = useState(false);
+  // const [coordinate, setCoordinate] = useState(null);
 
-  const setToken = async (token) => {
-    if (token) {
-      AsyncStorage.setItem("userToken", token);
+  const setTokenAndId = async (objTokenAndId) => {
+    if (objTokenAndId) {
+      AsyncStorage.setItem("userTokenAndId", objTokenAndId);
     } else {
-      AsyncStorage.removeItem("userToken");
+      AsyncStorage.removeItem("userTokenAndId");
     }
 
-    setUserToken(token);
+    setUserTokenAndId(objTokenAndId);
+  };
+
+  const setLocation = async (location) => {
+    if (location) {
+      AsyncStorage.setItem("userLocation", location);
+      setUserLocation(location);
+    } else {
+      AsyncStorage.removeItem("userLocation");
+      setUserLocation(null);
+    }
   };
 
   useEffect(() => {
     const bootstrapAsync = async () => {
-      const userToken = await AsyncStorage.getItem("userToken");
+      const userTokenAndId = await AsyncStorage.getItem("userTokenAndId");
+      const userLocation = await AsyncStorage.getItem("userLocation");
 
       setIsLoading(false);
-      setUserToken(userToken);
+      setUserLocation(userLocation);
+      setUserTokenAndId(userTokenAndId);
     };
 
     bootstrapAsync();
   }, []);
 
+  useEffect(() => {
+    const getPermissionAndLocation = async () => {
+      const tokenId = await AsyncStorage.getItem("userTokenAndId");
+      const user = JSON.parse(tokenId);
+      // console.log(user);
+      try {
+        // setErrors(false);
+        // const result = await Location.getForegroundPermissionsAsync();
+        // if (result.status === "granted") {
+
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        console.log(status);
+        if (status !== "granted") {
+          // setErrors(true);
+          setErrorMessageLocation(
+            "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
+          );
+        }
+        const { coords } = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Highest,
+        });
+        const tabCoordinate = [coords.latitude, coords.longitude];
+
+        try {
+          await axios.put(
+            `http://10.0.2.2:3200/user/update/${user.id}`,
+            {
+              location: tabCoordinate,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
+          // console.log(response.data);
+        } catch (e) {
+          alert("Location not work");
+          console.log("coordonnees ", e.message);
+        }
+
+        let setResponse = JSON.stringify({
+          location: tabCoordinate,
+        });
+
+        setLocation(setResponse);
+        // console.log(tabCoordinate);
+        // setCoordinate(tabCoordinate);
+        // setIsLoading(false);
+        // console.log(coordinate);
+        // }
+      } catch (err) {
+        alert("An error has occured");
+        console.log("ERREUR MESSAGE ", err.message);
+      }
+    };
+    if (!isLoading) {
+      getPermissionAndLocation();
+    }
+  }, [isLoading]);
+
   return (
     <NavigationContainer>
-      {isLoading ? null : userToken === null ? (
+      {isLoading ? null : userTokenAndId === null ? (
         <Stack.Navigator>
           <Stack.Screen name="SignUp">
-            {(props) => <SignupScreen {...props} setToken={setToken} />}
+            {(props) => (
+              <SignupScreen {...props} setTokenAndId={setTokenAndId} />
+            )}
           </Stack.Screen>
           <Stack.Screen name="Login">
-            {(props) => <LoginScreen {...props} setToken={setToken} />}
+            {(props) => (
+              <LoginScreen {...props} setTokenAndId={setTokenAndId} />
+            )}
           </Stack.Screen>
         </Stack.Navigator>
       ) : (
@@ -86,6 +174,14 @@ export default function App() {
                           },
                           headerTitleStyle: { color: "white" },
                           headerTitleAlign: "center",
+                          headerLeft: () => (
+                            <TouchableOpacity
+                              activeOpacity={0.9}
+                              onPress={() => setTokenAndId(null)}
+                            >
+                              <Entypo name="log-out" size={20} color="white" />
+                            </TouchableOpacity>
+                          ),
                           headerRight: () => (
                             <TouchableOpacity
                               {...props}
@@ -101,12 +197,20 @@ export default function App() {
                               />
                             </TouchableOpacity>
                           ),
+                          headerLeftContainerStyle: {
+                            marginLeft: 15,
+                          },
                           headerRightContainerStyle: {
                             marginRight: 15,
                           },
                         }}
                       >
-                        {(props) => <RestaurantsScreen {...props} />}
+                        {(props) => (
+                          <RestaurantsScreen
+                            {...props}
+                            errorMessageLocation={errorMessageLocation}
+                          />
+                        )}
                       </Stack.Screen>
                       <Stack.Screen
                         name="AroundMe"
@@ -120,11 +224,7 @@ export default function App() {
                         }}
                       >
                         {(props) => (
-                          <MapScreen
-                            {...props}
-                            data={data}
-                            isLoading={isLoading}
-                          />
+                          <MapScreen {...props} userLocation={userLocation} />
                         )}
                       </Stack.Screen>
                     </Stack.Navigator>

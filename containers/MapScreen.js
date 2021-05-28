@@ -11,11 +11,26 @@ import {
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { colors, border } from "../assets/js/colors";
 
-export default function MapScreen({ data, isLoading }) {
-  //   const { data } = useRoute();
-  //   console.log(data);
-  const [errors, setErrors] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+export default function MapScreen({ userLocation }) {
+  // const { gps } = useRoute();
+  console.log(userLocation);
+  const [data, setData] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://10.0.2.2:3200/restaurants");
+        // console.log(response);
+        setIsLoading(false);
+        setData(response.data);
+        console.log(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -25,17 +40,13 @@ export default function MapScreen({ data, isLoading }) {
           color={colors.purpleContainer}
           style={{ marginTop: 50 }}
         />
-      ) : !isLoading && errors ? (
-        <View style={styles.wrapper}>
-          <Text style={styles.error}>{errorMessage}</Text>
-        </View>
       ) : (
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: coordinate.latitude ? coordinate.latitude : 48.856614,
-            longitude: coordinate.longitude ? coordinate.longitude : 2.3522219,
+            latitude: 48.856614,
+            longitude: 2.3522219,
             latitudeDelta: 0.15,
             longitudeDelta: 0.15,
           }}
