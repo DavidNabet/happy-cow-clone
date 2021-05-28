@@ -13,18 +13,18 @@ import { colors, border } from "../assets/js/colors";
 
 export default function MapScreen({ userLocation }) {
   // const { gps } = useRoute();
-  console.log(userLocation);
-  const [data, setData] = useState();
+  // console.log(userLocation.location);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://10.0.2.2:3200/restaurants");
-        // console.log(response);
+        console.log(response);
         setIsLoading(false);
         setData(response.data);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.log(error.message);
       }
@@ -45,8 +45,12 @@ export default function MapScreen({ userLocation }) {
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: 48.856614,
-            longitude: 2.3522219,
+            latitude: userLocation.location
+              ? userLocation.location[0]
+              : 48.856614,
+            longitude: userLocation.location
+              ? userLocation.location[1]
+              : 2.3522219,
             latitudeDelta: 0.15,
             longitudeDelta: 0.15,
           }}

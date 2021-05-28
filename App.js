@@ -76,51 +76,52 @@ export default function App() {
 
         const { status } = await Location.requestForegroundPermissionsAsync();
         console.log(status);
-        if (status !== "granted") {
-          // setErrors(true);
+        if (status === "granted") {
+          // setErrors(true)
+          const { coords } = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Highest,
+          });
+          const tabCoordinate = [coords.latitude, coords.longitude];
+
+          try {
+            await axios.put(
+              `http://10.0.2.2:3200/user/update/${user.id}`,
+              {
+                location: tabCoordinate,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${user.token}`,
+                },
+              }
+            );
+            // console.log(response.data);
+          } catch (e) {
+            alert("Location not work");
+            console.log("coordonnees ", e.message);
+          }
+
+          let setResponse = JSON.stringify({
+            location: tabCoordinate,
+          });
+
+          setLocation(setResponse);
+          // console.log(tabCoordinate);
+          // setCoordinate(tabCoordinate);
+          // setIsLoading(false);
+          // console.log(coordinate);
+          // }
+        } else {
           setErrorMessageLocation(
             "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
           );
         }
-        const { coords } = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Highest,
-        });
-        const tabCoordinate = [coords.latitude, coords.longitude];
-
-        try {
-          await axios.put(
-            `http://10.0.2.2:3200/user/update/${user.id}`,
-            {
-              location: tabCoordinate,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${user.token}`,
-              },
-            }
-          );
-          // console.log(response.data);
-        } catch (e) {
-          alert("Location not work");
-          console.log("coordonnees ", e.message);
-        }
-
-        let setResponse = JSON.stringify({
-          location: tabCoordinate,
-        });
-
-        setLocation(setResponse);
-        // console.log(tabCoordinate);
-        // setCoordinate(tabCoordinate);
-        // setIsLoading(false);
-        // console.log(coordinate);
-        // }
       } catch (err) {
         alert("An error has occured");
         console.log("ERREUR MESSAGE ", err.message);
       }
     };
-    if (!isLoading) {
+    if (!isLoading && userTokenAndId) {
       getPermissionAndLocation();
     }
   }, [isLoading]);

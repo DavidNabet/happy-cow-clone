@@ -14,12 +14,13 @@ import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import RestaurantsCard from "../components/RestaurantsCard";
 import Filters from "../components/Filters";
+import SearchInput from "../components/SearchInput";
 import types from "../seed/types.json";
 
 export default function RestaurantsScreen({ errorMessageLocation }) {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   // rayon actif
   const [isActive, setIsActive] = useState(false);
   //
@@ -35,6 +36,7 @@ export default function RestaurantsScreen({ errorMessageLocation }) {
           },
         });
         // console.log(response);
+        setIsActive(false);
         setIsLoading(false);
         setData(response.data);
       } catch (error) {
@@ -43,6 +45,28 @@ export default function RestaurantsScreen({ errorMessageLocation }) {
     };
     fetchData();
   }, [typeEl]);
+
+  const filterText = (searchText) => {
+    if (data !== undefined) {
+      setIsActive(false);
+      return data.filter((data) => {
+        //   console.log(data.name.toLowerCase());
+        if (data.name.toLowerCase().includes(searchText.toLowerCase())) {
+          setIsActive(true);
+          return true;
+        } else if (
+          data.description !== null &&
+          data.description.includes(searchText)
+        ) {
+          setIsActive(true);
+          return true;
+        }
+        return false;
+      });
+    }
+  };
+
+  const [search, setSearch] = useState("");
 
   return isLoading ? (
     <ActivityIndicator
@@ -53,12 +77,26 @@ export default function RestaurantsScreen({ errorMessageLocation }) {
   ) : (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" backgroundColor={colors.purpleStatusBar} />
-      <Filters setTypeEl={setTypeEl} typeEl={typeEl} />
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.placeId.toString()}
-        renderItem={({ item }) => <RestaurantsCard data={item} />}
+      <SearchInput
+        dataSearch={data}
+        search={search}
+        setSearch={setSearch}
+        filterText={filterText}
       />
+      <Filters setTypeEl={setTypeEl} typeEl={typeEl} />
+      {isActive && search ? (
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.placeId.toString()}
+          renderItem={({ item }) => <RestaurantsCard data={item} />}
+        />
+      ) : (
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.placeId.toString()}
+          renderItem={({ item }) => <RestaurantsCard data={item} />}
+        />
+      )}
     </SafeAreaView>
   );
 }
