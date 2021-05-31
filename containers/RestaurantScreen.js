@@ -6,24 +6,25 @@ import Rating from "../components/Rating";
 import DistanceLocation from "../components/DistanceLocation";
 import * as Location from "expo-location";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-
-export default function RestaurantScreen({ route }) {
+import FilterImage from "../components/FilterImage";
+import types from "../seed/types.json";
+export default function RestaurantScreen({ route, userLocation }) {
   // console.log(route.params.userLocation);
-  const { placeId, userLocation } = route.params;
-  const [data, setData] = useState({});
+  const { placeId } = route.params;
+  const [dataResto, setDataResto] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // `https://happy-cow-back-project.herokuapp.com/resto/${placeId}`
+        // `http://10.0.2.2:3200/resto/${placeId}`
         const response = await axios.get(
-          `http://10.0.2.2:3200/resto/${placeId}`
+          `https://happy-cow-back-project.herokuapp.com/resto/${placeId}`
         );
         if (response.status === 200) {
           // console.log(response.data);
           setIsLoading(false);
-          setData(response.data);
+          setDataResto(response.data);
         }
       } catch (error) {
         console.log(error.response);
@@ -32,6 +33,17 @@ export default function RestaurantScreen({ route }) {
     };
     fetchData();
   }, []);
+
+  // const bgBar = () => {
+  //   const color = Object.keys(colors).indexOf(types[0].type) !== -1;
+  //   types.map((item) => {
+  //     return item.type === Object.keys(colors) ?
+  //   })
+
+  // }
+
+  // const bgBar = dataResto.type === types[0].type;
+  // console.log(Object.keys(colors));
   return isLoading ? (
     <ActivityIndicator
       size="large"
@@ -45,26 +57,31 @@ export default function RestaurantScreen({ route }) {
           <View style={styles.cover}>
             <Image
               style={styles.cover_img}
-              source={{ uri: data.thumbnail }}
+              source={{ uri: dataResto.thumbnail }}
               resizeMode="cover"
             />
           </View>
           <View style={styles.barOptions}>
             <View style={styles.row}>
-              <Text style={styles.title}>{data.name}</Text>
+              <Text style={styles.title}>{dataResto.name}</Text>
+              <View style={styles.image}>
+                <FilterImage type={dataResto.type} large />
+              </View>
             </View>
             <View style={styles.row}>
               <View style={{ flexDirection: "row" }}>
-                <Rating rating={Number(data.rating)} />
-                {data.vegan === 1 && <Text style={styles.vegan}>Vegan</Text>}
+                <Rating rating={Number(dataResto.rating)} />
+                {dataResto.vegan === 1 && (
+                  <Text style={styles.vegan}>Vegan</Text>
+                )}
               </View>
-              <Text style={styles.type}>{data.type}</Text>
+              <Text style={styles.type}>{dataResto.type}</Text>
             </View>
             <View style={styles.last_row}>
-              {/* <DistanceLocation
-                data={data.location}
+              <DistanceLocation
+                data={dataResto.location}
                 userLocation={userLocation}
-              /> */}
+              />
             </View>
           </View>
         </View>
@@ -78,7 +95,10 @@ export default function RestaurantScreen({ route }) {
             }}
           ></View>
           <View style={[styles.block_desc, styles.margin]}>
-            <Text style={styles.description}>{data.description}</Text>
+            <Text style={styles.description}>
+              {dataResto.description !== undefined &&
+                dataResto.description.split(" Open ")[0]}
+            </Text>
           </View>
         </View>
       </View>
@@ -107,9 +127,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   barOptions: {
-    backgroundColor: colors.vegan,
+    position: "relative",
+    zIndex: 1,
+    backgroundColor: "#222",
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  image: {
+    position: "absolute",
+    bottom: 5,
+    zIndex: 3,
+    right: 0,
   },
   row: {
     marginBottom: 5,

@@ -17,7 +17,6 @@ export default function RestaurantsCard({ data, userLocation }) {
           onPress={() => {
             navigation.navigate("Restaurant", {
               placeId: data.placeId,
-              userLocation: userLocation,
             });
           }}
         >

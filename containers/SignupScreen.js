@@ -23,8 +23,8 @@ export default function SignupScreen({ setTokenAndId, navigation }) {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        "http://10.0.2.2:3200/user/signup",
-        // "https://happy-cow-back-project.herokuapp.com/user/signup",
+        // "http://10.0.2.2:3200/user/signup",
+        "https://happy-cow-back-project.herokuapp.com/user/signup",
         {
           email: email,
           username: username,

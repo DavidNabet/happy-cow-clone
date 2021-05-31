@@ -20,7 +20,7 @@ import * as Location from "expo-location";
 import types from "../seed/types.json";
 
 export default function RestaurantsScreen({ userLocation, setLocation }) {
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingPlace, setIsLoadingPlace] = useState(true);
   const [errorMessageLocation, setErrorMessageLocation] = useState("");
@@ -36,8 +36,8 @@ export default function RestaurantsScreen({ userLocation, setLocation }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://10.0.2.2:3200/restaurants",
-          // "https://happy-cow-back-project.herokuapp.com/restaurants",
+          // "http://10.0.2.2:3200/restaurants",
+          "https://happy-cow-back-project.herokuapp.com/restaurants",
           {
             params: {
               type: typeEl,
@@ -84,16 +84,16 @@ export default function RestaurantsScreen({ userLocation, setLocation }) {
 
         try {
           await axios.put(
-            `http://10.0.2.2:3200/user/update/${user.id}`,
-            // `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
+            // `http://10.0.2.2:3200/user/update/${user.id}`,
+            `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
             {
               location: tabCoordinate,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${user.token}`,
-              },
             }
+            // {
+            //   headers: {
+            //     Authorization: `Bearer ${user.token}`,
+            //   },
+            // }
           );
           // console.log(response.data);
         } catch (e) {

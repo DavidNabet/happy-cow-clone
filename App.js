@@ -28,6 +28,8 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userTokenAndId, setUserTokenAndId] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
+  const [isLoadingResto, setIsLoadingResto] = useState(true);
+  const [typeEl, setTypeEl] = useState(null);
   // const [isLoadingPlace, setIsLoadingPlace] = useState(true);
   // const [errors, setErrors] = useState(false);
   // const [coordinate, setCoordinate] = useState(null);
@@ -65,6 +67,35 @@ export default function App() {
 
     bootstrapAsync();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://10.0.2.2:3200/restaurants",
+  //         // "https://happy-cow-back-project.herokuapp.com/restaurants",
+  //         {
+  //           params: {
+  //             type: typeEl,
+  //             rayon: 3,
+  //             limit: 20,
+  //           },
+  //         }
+  //       );
+  //       // console.log(response);
+  //       setIsActive(false);
+  //       setIsLoading(false);
+  //       setData(response.data);
+  //       // console.log(userLocation);
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   };
+  //   if(!isLoading){
+  //     fetchData();
+  //   }
+
+  // }, [isLoading, typeEl]);
 
   return (
     <NavigationContainer>
@@ -154,8 +185,12 @@ export default function App() {
                         {(props) => (
                           <RestaurantsScreen
                             {...props}
+                            // data={data}
+                            // isLoading={isLoadingResto}
                             setLocation={setLocation}
                             userLocation={userLocation}
+                            // typeEl={typeEl}
+                            // setTypeEl={setTypeEl}
                           />
                         )}
                       </Stack.Screen>
@@ -176,7 +211,12 @@ export default function App() {
                           ),
                         }}
                       >
-                        {(props) => <RestaurantScreen {...props} />}
+                        {(props) => (
+                          <RestaurantScreen
+                            {...props}
+                            userLocation={userLocation}
+                          />
+                        )}
                       </Stack.Screen>
                       <Stack.Screen
                         name="AroundMe"
