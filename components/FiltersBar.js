@@ -6,7 +6,6 @@ import { useNavigation } from "@react-navigation/core";
 
 export default function FiltersBar({ typeEl, setTypeEl, data }) {
   const navigation = useNavigation();
-  // const [isColored, setIsColored] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>

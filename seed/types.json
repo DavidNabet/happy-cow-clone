@@ -1,82 +1,98 @@
 [
   {
     "type": "vegan",
-    "category": 0,
-    "icon": "../assets/png/vegan.png"
+    "icon": "../assets/icon/vegan.svg",
+    "name": "vegan",
+    "category": 0
   },
   {
     "type": "vegetarian",
-    "category": 0,
-    "icon": "../assets/png/vegetarian.png"
+    "icon": "../assets/icon/vegetarian.svg",
+    "name": "vegetarian",
+    "category": 0
   },
   {
     "type": "veg-options",
-    "category": 0,
-    "icon": "../assets/png/veg-options.png"
+    "icon": "../assets/icon/veg-options.svg",
+    "name": "vegOptions",
+    "category": 0
   },
   {
     "type": "Health Store",
     "category": 1,
-    "icon": "../assets/png/health-store.png"
+    "icon": "../assets/icon/health-store.svg",
+    "name": "HealthStore"
   },
   {
     "type": "Veg Store",
     "category": 2,
-    "icon": "../assets/png/veg-store.png"
+    "icon": "../assets/icon/veg-store.svg",
+    "name": "VegStore"
   },
   {
     "type": "Bakery",
     "category": 3,
-    "icon": "../assets/png/bakery.png"
+    "icon": "../assets/icon/bakery.svg",
+    "name": "Bakery"
   },
   {
     "type": "B_B",
     "category": 4,
-    "icon": "../assets/png/b&b-hotels.png"
+    "icon": "../assets/icon/b&b-hotels.svg",
+    "name": "B_B"
   },
   {
     "type": "Delivery",
     "category": 5,
-    "icon": "../assets/png/delivery.png"
+    "icon": "../assets/icon/delivery.svg",
+    "name": "Delivery"
   },
   {
     "type": "Catering",
     "category": 6,
-    "icon": "../assets/png/catering.png"
+    "icon": "../assets/icon/catering.svg",
+    "name": "Catering"
   },
   {
     "type": "Organization",
     "category": 7,
-    "icon": "../assets/png/organization.png"
+    "icon": "../assets/icon/organization.svg",
+    "name": "Organization"
   },
   {
     "type": "Food Truck",
     "category": 10,
-    "icon": "../assets/png/food-truck.png"
+    "icon": "../assets/icon/food-truck.svg",
+    "name": "FoodTruck"
   },
   {
     "type": "Market Vendor",
     "category": 11,
-    "icon": "../assets/png/market-vendor.png"
+    "icon": "../assets/icon/market-vendor.svg",
+    "name": "MarketVendor"
   },
   {
     "type": "Ice Cream",
     "category": 12,
-    "icon": "../assets/png/ice-cream.png"
+    "icon": "../assets/icon/ice-cream.svg",
+    "name": "IceCream"
   },
   {
     "type": "Juice Bar",
     "category": 13,
-    "icon": "../assets/png/juice-bar.png"
+    "icon": "../assets/icon/juice-bar.svg",
+    "name": "JuiceBar"
   },
   {
     "type": "Professional",
     "category": 14,
-    "icon": "../assets/png/vegan-professional.png"
+    "icon": "../assets/icon/vegan-professional.svg",
+    "name": "Professional"
   },
   {
     "type": "Other",
     "category": 99,
-    "icon": "../assets/png/other.png"
+    "icon": "../assets/icon/other.svg",
+    "name": "Other"
   }
 ]

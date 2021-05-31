@@ -3,6 +3,7 @@ import { ActivityIndicator, Image, Text, View, StyleSheet } from "react-native";
 import axios from "axios";
 import { border, colors } from "../assets/js/colors";
 import Rating from "../components/Rating";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import DistanceLocation from "../components/DistanceLocation";
 import * as Location from "expo-location";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -17,9 +18,8 @@ export default function RestaurantScreen({ route, userLocation }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // `http://10.0.2.2:3200/resto/${placeId}`
         const response = await axios.get(
-          `https://happy-cow-back-project.herokuapp.com/resto/${placeId}`
+          `http://10.0.2.2:3200/resto/${placeId}`
         );
         if (response.status === 200) {
           // console.log(response.data);
@@ -34,16 +34,13 @@ export default function RestaurantScreen({ route, userLocation }) {
     fetchData();
   }, []);
 
-  // const bgBar = () => {
-  //   const color = Object.keys(colors).indexOf(types[0].type) !== -1;
-  //   types.map((item) => {
-  //     return item.type === Object.keys(colors) ?
-  //   })
+  // export const bgBar = () => {
+  //   types.map((item, i) => {
+  //     let color = Object.keys(colors).includes(item.name);
+  //     return color ? Object.values(colors)[i] : "#222";
+  //   });
+  // };
 
-  // }
-
-  // const bgBar = dataResto.type === types[0].type;
-  // console.log(Object.keys(colors));
   return isLoading ? (
     <ActivityIndicator
       size="large"
@@ -86,15 +83,33 @@ export default function RestaurantScreen({ route, userLocation }) {
           </View>
         </View>
         <View style={styles.middle_section}>
+          <View style={[styles.margin, styles.middle_cols]}>
+            <View style={styles.middle_cols_block}>
+              <FontAwesome5 name="pen" size={20} color="grey" />
+              <Text style={styles.middle_cols_text}>Ajouter un avis</Text>
+            </View>
+            <View style={styles.middle_cols_block}>
+              <MaterialCommunityIcons
+                name="camera-plus"
+                size={20}
+                color="grey"
+              />
+              <Text style={styles.middle_cols_text}>Ajouter une photo</Text>
+            </View>
+            <View style={styles.middle_cols_block}>
+              <FontAwesome5 name="phone-alt" size={20} color="grey" />
+              <Text style={styles.middle_cols_text}>Appeler</Text>
+            </View>
+          </View>
           <View
             style={{
               width: "100%",
-              borderTopWidth: 1,
-              borderTopColor: colors.grey,
+              borderWidth: 1,
               borderStyle: "solid",
+              borderColor: colors.grey,
             }}
-          ></View>
-          <View style={[styles.block_desc, styles.margin]}>
+          />
+          <View style={styles.margin}>
             <Text style={styles.description}>
               {dataResto.description !== undefined &&
                 dataResto.description.split(" Open ")[0]}
@@ -117,19 +132,16 @@ const styles = StyleSheet.create({
   },
   top_section: {
     position: "relative",
-    flex: 1,
   },
-  cover: {
-    flex: 1,
-    maxHeight: 250,
-  },
+  cover: {},
   cover_img: {
-    flex: 1,
+    width: "100%",
+    height: 200,
   },
   barOptions: {
     position: "relative",
     zIndex: 1,
-    backgroundColor: "#222",
+    backgroundColor: colors.purpleContainer,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
@@ -172,14 +184,30 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 12,
   },
-  middle_section: {
-    marginHorizontal: 10,
-  },
   margin: {
     marginHorizontal: 5,
     marginVertical: 12,
   },
-  block_desc: {},
+  middle_section: {
+    marginHorizontal: 10,
+  },
+  middle_cols: {
+    width: "100%",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  middle_cols_block: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+  middle_cols_text: {
+    textAlign: "center",
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "grey",
+    textTransform: "uppercase",
+  },
   description: {
     lineHeight: 24,
   },

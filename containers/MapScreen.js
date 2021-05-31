@@ -11,34 +11,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { colors, border } from "../assets/js/colors";
 
-export default function MapScreen({ route }) {
+export default function MapScreen({ route, data, isLoading }) {
   const { gps } = route.params;
-  // console.log("gps ", gps);
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          // "http://10.0.2.2:3200/restaurants",
-          "https://happy-cow-back-project.herokuapp.com/restaurants",
-          {
-            params: {
-              rayon: 1,
-            },
-          }
-        );
-        console.log("longueur ", response.data.length);
-        setIsLoading(false);
-        setData(response.data);
-        // console.log(data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    fetchData();
-  }, []);
+  console.log("gps ", gps);
+  // const [data, setData] = useState([]);
+  // const [isLoading, setIsLoading] = useState(true);
 
   /* 
 
@@ -82,7 +59,7 @@ export default function MapScreen({ route }) {
                 }}
                 title={marker.name}
                 description={marker.description}
-              />
+              ></Marker>
             );
           })}
         </MapView>

@@ -19,46 +19,49 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
 import types from "../seed/types.json";
 
-export default function RestaurantsScreen({ userLocation, setLocation }) {
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingPlace, setIsLoadingPlace] = useState(true);
+export default function RestaurantsScreen({
+  userLocation,
+  setLocation,
+  typeEl,
+  setTypeEl,
+  data,
+  isLoading,
+}) {
+  // const [data, setData] = useState();
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [isLoadingPlace, setIsLoadingPlace] = useState(true);
   const [errorMessageLocation, setErrorMessageLocation] = useState("");
   // rayon actif
   const [isActive, setIsActive] = useState(false);
   //
-  const [typeEl, setTypeEl] = useState(null);
+  // const [typeEl, setTypeEl] = useState(null);
   const [search, setSearch] = useState("");
 
   // let type = "vegan";
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          // "http://10.0.2.2:3200/restaurants",
-          "https://happy-cow-back-project.herokuapp.com/restaurants",
-          {
-            params: {
-              type: typeEl,
-              rayon: 3,
-              limit: 20,
-            },
-          }
-        );
-        // console.log(response);
-        setIsActive(false);
-        setIsLoading(false);
-        setData(response.data);
-        // console.log(userLocation);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    if (!isLoadingPlace) {
-      fetchData();
-    }
-  }, [typeEl, isLoadingPlace]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get("http://10.0.2.2:3200/restaurants", {
+  //         params: {
+  //           type: typeEl,
+  //           rayon: 3,
+  //           limit: 20,
+  //         },
+  //       });
+  //       // console.log(response);
+  //       setIsActive(false);
+  //       setIsLoading(false);
+  //       setData(response.data);
+  //       // console.log(userLocation);
+  //     } catch (error) {
+  //       console.log("restaurants ", error.message);
+  //     }
+  //   };
+  //   if (!isLoadingPlace) {
+  //     fetchData();
+  //   }
+  // }, [typeEl, isLoadingPlace]);
 
   useEffect(() => {
     const getPermissionAndLocation = async () => {
@@ -68,7 +71,8 @@ export default function RestaurantsScreen({ userLocation, setLocation }) {
       // setErrors(false);
       // const result = await Location.getForegroundPermissionsAsync();
       // if (result.status === "granted") {
-      const { status } = await Location.requestForegroundPermissionsAsync();
+      const { status, canAskAgain } =
+        await Location.requestForegroundPermissionsAsync();
       console.log(status);
       if (status === "granted") {
         // setErrors(true)
@@ -84,20 +88,19 @@ export default function RestaurantsScreen({ userLocation, setLocation }) {
 
         try {
           await axios.put(
-            // `http://10.0.2.2:3200/user/update/${user.id}`,
-            `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
+            `http://10.0.2.2:3200/user/update/${user.id}`,
             {
               location: tabCoordinate,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+                Accept: "application/json",
+              },
             }
-            // {
-            //   headers: {
-            //     Authorization: `Bearer ${user.token}`,
-            //   },
-            // }
           );
           // console.log(response.data);
         } catch (e) {
-          console.log(e.response);
           console.log("coordonnees ", e.message);
           alert("Location not work");
         }
@@ -105,7 +108,7 @@ export default function RestaurantsScreen({ userLocation, setLocation }) {
         let setResponse = JSON.stringify({
           location: tabCoordinate,
         });
-        setIsLoadingPlace(false);
+        // setIsLoadingPlace(false);
         setLocation(setResponse);
         // console.log(tabCoordinate);
         // setCoordinate(tabCoordinate);
@@ -125,7 +128,6 @@ export default function RestaurantsScreen({ userLocation, setLocation }) {
     if (data !== undefined) {
       setIsActive(false);
       return data.filter((data) => {
-        //   console.log(data.name.toLowerCase());
         if (data.name.toLowerCase().includes(searchText.toLowerCase())) {
           setIsActive(true);
           return true;
@@ -146,7 +148,7 @@ export default function RestaurantsScreen({ userLocation, setLocation }) {
     []
   );
 
-  return isLoadingPlace && isLoading ? (
+  return isLoading ? (
     <ActivityIndicator
       size="large"
       color={colors.purpleContainer}
