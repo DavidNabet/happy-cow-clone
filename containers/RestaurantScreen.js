@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Image, Text, View, StyleSheet } from "react-native";
 import axios from "axios";
 import { border, colors } from "../assets/js/colors";
-import DistanceLocation from "../components/DistanceLocation";
-import FilterImage from "../components/FilterImage";
 import Rating from "../components/Rating";
+import DistanceLocation from "../components/DistanceLocation";
 import * as Location from "expo-location";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 export default function RestaurantScreen({ route }) {
-  console.log(route.params.userLocation);
-  const { placeId } = route.params;
+  // console.log(route.params.userLocation);
+  const { placeId, userLocation } = route.params;
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -60,6 +59,12 @@ export default function RestaurantScreen({ route }) {
                 {data.vegan === 1 && <Text style={styles.vegan}>Vegan</Text>}
               </View>
               <Text style={styles.type}>{data.type}</Text>
+            </View>
+            <View style={styles.last_row}>
+              {/* <DistanceLocation
+                data={data.location}
+                userLocation={userLocation}
+              /> */}
             </View>
           </View>
         </View>
@@ -111,6 +116,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  last_row: {
+    marginBottom: 5,
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
   title: {
     fontSize: 16,

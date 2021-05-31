@@ -33,6 +33,34 @@ export default function RestaurantsScreen({ userLocation, setLocation }) {
   // let type = "vegan";
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://10.0.2.2:3200/restaurants",
+          // "https://happy-cow-back-project.herokuapp.com/restaurants",
+          {
+            params: {
+              type: typeEl,
+              rayon: 3,
+              limit: 20,
+            },
+          }
+        );
+        // console.log(response);
+        setIsActive(false);
+        setIsLoading(false);
+        setData(response.data);
+        // console.log(userLocation);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    if (!isLoadingPlace) {
+      fetchData();
+    }
+  }, [typeEl, isLoadingPlace]);
+
+  useEffect(() => {
     const getPermissionAndLocation = async () => {
       const tokenId = await AsyncStorage.getItem("userTokenAndId");
       const user = JSON.parse(tokenId);
@@ -92,34 +120,6 @@ export default function RestaurantsScreen({ userLocation, setLocation }) {
     };
     getPermissionAndLocation();
   }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://10.0.2.2:3200/restaurants",
-          // "https://happy-cow-back-project.herokuapp.com/restaurants",
-          {
-            params: {
-              type: typeEl,
-              rayon: 3,
-              limit: 20,
-            },
-          }
-        );
-        // console.log(response);
-        setIsActive(false);
-        setIsLoading(false);
-        setData(response.data);
-        // console.log(userLocation);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    if (!isLoadingPlace) {
-      fetchData();
-    }
-  }, [typeEl, isLoadingPlace]);
 
   const filterText = (searchText) => {
     if (data !== undefined) {

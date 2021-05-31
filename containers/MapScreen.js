@@ -13,7 +13,7 @@ import { colors, border } from "../assets/js/colors";
 
 export default function MapScreen({ route }) {
   const { gps } = route.params;
-  console.log("gps ", gps);
+  // console.log("gps ", gps);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
