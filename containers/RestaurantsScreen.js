@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { colors } from "../assets/js/colors";
 import {
@@ -13,30 +13,35 @@ import {
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import RestaurantsCard from "../components/RestaurantsCard";
-import Filters from "../components/Filters";
+import FiltersBar from "../components/FiltersBar";
 import SearchInput from "../components/SearchInput";
 import types from "../seed/types.json";
 
-export default function RestaurantsScreen({ errorMessageLocation }) {
+export default function RestaurantsScreen({
+  errorMessageLocation,
+  userLocation,
+}) {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  // const [search, setSearch] = useState("");
   // rayon actif
   const [isActive, setIsActive] = useState(false);
   //
   const [typeEl, setTypeEl] = useState(null);
+  const [search, setSearch] = useState("");
+
   // let type = "vegan";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          // "http://10.0.2.2:3200/restaurants",
-          "https://happy-cow-back-project.herokuapp.com/restaurants",
+          "http://10.0.2.2:3200/restaurants",
+          // "https://happy-cow-back-project.herokuapp.com/restaurants",
           {
             params: {
               type: typeEl,
               rayon: 3,
+              limit: 20,
             },
           }
         );
@@ -44,6 +49,7 @@ export default function RestaurantsScreen({ errorMessageLocation }) {
         setIsActive(false);
         setIsLoading(false);
         setData(response.data);
+        // console.log(userLocation);
       } catch (error) {
         console.log(error.message);
       }
@@ -71,7 +77,10 @@ export default function RestaurantsScreen({ errorMessageLocation }) {
     }
   };
 
-  const [search, setSearch] = useState("");
+  const renderItem = useCallback(
+    ({ item }) => <RestaurantsCard data={item} userLocation={userLocation} />,
+    []
+  );
 
   return isLoading ? (
     <ActivityIndicator
@@ -90,18 +99,18 @@ export default function RestaurantsScreen({ errorMessageLocation }) {
         setSearch={setSearch}
         filterText={filterText}
       />
-      <Filters setTypeEl={setTypeEl} typeEl={typeEl} />
+      <FiltersBar data={data} setTypeEl={setTypeEl} typeEl={typeEl} />
       {isActive && search !== null ? (
         <FlatList
           data={search}
           keyExtractor={(item) => item.placeId.toString()}
-          renderItem={({ item }) => <RestaurantsCard data={item} />}
+          renderItem={renderItem}
         />
       ) : (
         <FlatList
           data={data}
           keyExtractor={(item) => item.placeId.toString()}
-          renderItem={({ item }) => <RestaurantsCard data={item} />}
+          renderItem={renderItem}
         />
       )}
     </SafeAreaView>

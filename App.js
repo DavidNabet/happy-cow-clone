@@ -9,15 +9,18 @@ import {
   Ionicons,
   MaterialIcons,
   FontAwesome5,
+  FontAwesome,
   Entypo,
   Feather,
 } from "@expo/vector-icons";
 import { colors } from "./assets/js/colors";
 import RestaurantsScreen from "./containers/RestaurantsScreen";
+import RestaurantScreen from "./containers/RestaurantScreen";
 import MapScreen from "./containers/MapScreen";
 import FavoritesScreen from "./containers/FavoritesScreen";
 import LoginScreen from "./containers/LoginScreen";
 import SignupScreen from "./containers/SignupScreen";
+import FiltersScreen from "./components/FiltersScreen";
 import * as Location from "expo-location";
 
 const Tab = createBottomTabNavigator();
@@ -70,63 +73,67 @@ export default function App() {
       const tokenId = await AsyncStorage.getItem("userTokenAndId");
       const user = JSON.parse(tokenId);
       // console.log(user);
-      try {
-        // setErrors(false);
-        // const result = await Location.getForegroundPermissionsAsync();
-        // if (result.status === "granted") {
+      // setErrors(false);
+      // const result = await Location.getForegroundPermissionsAsync();
+      // if (result.status === "granted") {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      console.log(status);
+      if (status === "granted") {
+        // setErrors(true)
+        const { coords } = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Highest,
+        });
+        // const objCoordinate = {
+        //   lat: coords.latitude,
+        //   lng: coords.longitude,
+        // };
 
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        console.log(status);
-        if (status === "granted") {
-          // setErrors(true)
-          const { coords } = await Location.getCurrentPositionAsync({
-            accuracy: Location.Accuracy.Highest,
-          });
-          const tabCoordinate = [coords.latitude, coords.longitude];
+        const tabCoordinate = [coords.latitude, coords.longitude];
 
-          try {
-            await axios.put(
-              // `http://10.0.2.2:3200/user/update/${user.id}`,
-              `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
-              {
-                location: tabCoordinate,
+        try {
+          await axios.put(
+            `http://10.0.2.2:3200/user/update/${user.id}`,
+            // `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
+            {
+              location: tabCoordinate,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
               },
-              {
-                headers: {
-                  Authorization: `Bearer ${user.token}`,
-                },
-              }
-            );
-            // console.log(response.data);
-          } catch (e) {
-            alert("Location not work");
-            console.log("coordonnees ", e.message);
-          }
-
-          let setResponse = JSON.stringify({
-            location: tabCoordinate,
-          });
-
-          setLocation(setResponse);
-          // console.log(tabCoordinate);
-          // setCoordinate(tabCoordinate);
-          // setIsLoading(false);
-          // console.log(coordinate);
-          // }
-        } else {
-          setErrorMessageLocation(
-            "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
+            }
           );
+          // console.log(response.data);
+        } catch (e) {
+          console.log(e.response);
+          console.log("coordonnees ", e.message);
+          alert("Location not work");
         }
-      } catch (err) {
-        alert("An error has occured");
-        console.log("ERREUR MESSAGE ", err.message);
+
+        let setResponse = JSON.stringify({
+          location: tabCoordinate,
+        });
+
+        setLocation(setResponse);
+        // console.log(tabCoordinate);
+        // setCoordinate(tabCoordinate);
+        // setIsLoading(false);
+        // console.log(coordinate);
+        // }
+      } else {
+        setErrorMessageLocation(
+          "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
+        );
       }
     };
-    if ((!isLoading && userLocation) || userTokenAndId) {
+    if (!isLoading && userTokenAndId) {
       getPermissionAndLocation();
     }
   }, [isLoading]);
+
+  // useEffect(() => {
+
+  // }, []);
 
   return (
     <NavigationContainer>
@@ -180,7 +187,10 @@ export default function App() {
                           headerLeft: () => (
                             <TouchableOpacity
                               activeOpacity={0.9}
-                              onPress={() => setTokenAndId(null)}
+                              onPress={() => {
+                                setTokenAndId(null);
+                                setLocation(null);
+                              }}
                             >
                               <Entypo name="log-out" size={20} color="white" />
                             </TouchableOpacity>
@@ -212,8 +222,28 @@ export default function App() {
                           <RestaurantsScreen
                             {...props}
                             errorMessageLocation={errorMessageLocation}
+                            userLocation={userLocation}
                           />
                         )}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="Restaurant"
+                        options={{
+                          headerStyle: {
+                            backgroundColor: colors.purpleContainer,
+                          },
+                          headerRight: () => (
+                            <TouchableOpacity {...props} activeOpacity={0.9}>
+                              <FontAwesome
+                                name="star-half-empty"
+                                size={20}
+                                color="transparent"
+                              />
+                            </TouchableOpacity>
+                          ),
+                        }}
+                      >
+                        {(props) => <RestaurantScreen {...props} />}
                       </Stack.Screen>
                       <Stack.Screen
                         name="AroundMe"
@@ -230,6 +260,17 @@ export default function App() {
                         {(props) => (
                           <MapScreen {...props} userLocation={userLocation} />
                         )}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="Filtres"
+                        options={{
+                          headerStyle: {
+                            backgroundColor: colors.purpleContainer,
+                          },
+                          headerTitleStyle: { color: "white" },
+                        }}
+                      >
+                        {(props) => <FiltersScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

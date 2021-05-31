@@ -25,8 +25,8 @@ export default function LoginScreen({ setTokenAndId, navigation }) {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        // "http://10.0.2.2:3200/user/login",
-        "https://happy-cow-back-project.herokuapp.com/user/login",
+        "http://10.0.2.2:3200/user/login",
+        // "https://happy-cow-back-project.herokuapp.com/user/login",
         {
           email: email,
           password: password,

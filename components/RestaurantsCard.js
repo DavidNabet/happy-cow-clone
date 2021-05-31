@@ -1,16 +1,26 @@
 import React from "react";
 import { colors, border } from "../assets/js/colors";
-import { Text, View, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 import Rating from "./Rating";
 import Price from "./Price";
+import DistanceLocation from "./DistanceLocation";
 import FilterImage from "./FilterImage";
-// import OpenClosed from "./OpenClosed";
 
-export default function RestaurantsCard({ data }) {
+export default function RestaurantsCard({ data, userLocation }) {
+  const navigation = useNavigation();
   return (
     <View style={styles.wrapper}>
       {data.pictures.length > 0 && (
-        <View style={styles.item}>
+        <TouchableOpacity
+          style={styles.item}
+          onPress={() => {
+            navigation.navigate("Restaurant", {
+              placeId: data.placeId,
+              userLocation: userLocation,
+            });
+          }}
+        >
           <View style={styles.cover}>
             <Image
               source={{ uri: data.thumbnail }}
@@ -21,16 +31,20 @@ export default function RestaurantsCard({ data }) {
           <View style={styles.block}>
             <View style={styles.sub_block}>
               <Text style={styles.title} numberOfLines={1}>
-                {data.name}
+                {data.name.slice(0, 25) + "..."}
               </Text>
               <FilterImage type={data.type} />
             </View>
             <View style={styles.sub_block}>
               <Rating rating={Number(data.rating)} />
-              <Text style={styles.text}></Text>
+              <View>
+                <DistanceLocation
+                  data={data.location}
+                  userLocation={userLocation}
+                />
+              </View>
             </View>
-            <View style={styles.sub_block}>
-              <Text>Time</Text>
+            <View style={{ justifyContent: "flex-end", flexDirection: "row" }}>
               <Price price={data.price} />
             </View>
             <View style={styles.block_last_row}>
@@ -39,7 +53,7 @@ export default function RestaurantsCard({ data }) {
               </Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       )}
     </View>
   );
@@ -77,6 +91,7 @@ const styles = StyleSheet.create({
   },
   sub_block: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
   },
   title: {

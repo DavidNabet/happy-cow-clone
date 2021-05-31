@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, border } from "../assets/js/colors";
+import { useNavigation } from "@react-navigation/core";
 
-export default function Filters({ typeEl, setTypeEl }) {
+export default function FiltersBar({ typeEl, setTypeEl, data }) {
+  const navigation = useNavigation();
   // const [isColored, setIsColored] = useState(false);
   return (
     <View style={styles.container}>
@@ -52,7 +54,14 @@ export default function Filters({ typeEl, setTypeEl }) {
             Options Végétariennes
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.block}>
+        <TouchableOpacity
+          style={styles.block}
+          onPress={() =>
+            navigation.navigate("Filtres", {
+              data: data,
+            })
+          }
+        >
           <Ionicons name="ios-options" size={20} color={colors.grey} />
           <Text style={styles.text}>Filtres</Text>
         </TouchableOpacity>

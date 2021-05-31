@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useRoute } from "@react-navigation/core";
 import {
   View,
   StyleSheet,
@@ -22,9 +21,14 @@ export default function MapScreen({ userLocation }) {
       try {
         const response = await axios.get(
           // "http://10.0.2.2:3200/restaurants",
-          "https://happy-cow-back-project.herokuapp.com/restaurants"
+          "https://happy-cow-back-project.herokuapp.com/restaurants",
+          {
+            params: {
+              rayon: 1,
+            },
+          }
         );
-        console.log(response);
+        console.log("longueur ", response.data.length);
         setIsLoading(false);
         setData(response.data);
         // console.log(data);
@@ -34,6 +38,18 @@ export default function MapScreen({ userLocation }) {
     };
     fetchData();
   }, []);
+
+  /* 
+
+              latitude: userLocation.location.lat
+              ? userLocation.location.lat
+              : 48.856614,
+            longitude: userLocation.location.lng
+              ? userLocation.location.lng
+              : 2.3522219,
+              -----------------------------------
+   
+  */
 
   return (
     <View style={styles.container}>
