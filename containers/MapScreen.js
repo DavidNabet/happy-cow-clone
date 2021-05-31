@@ -7,12 +7,13 @@ import {
   ActivityIndicator,
   Text,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { colors, border } from "../assets/js/colors";
 
-export default function MapScreen({ userLocation }) {
-  // const { gps } = useRoute();
-  // console.log(userLocation.location);
+export default function MapScreen({ route }) {
+  const { gps } = route.params;
+  console.log("gps ", gps);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -64,12 +65,8 @@ export default function MapScreen({ userLocation }) {
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           initialRegion={{
-            latitude: userLocation.location
-              ? userLocation.location[0]
-              : 48.856614,
-            longitude: userLocation.location
-              ? userLocation.location[1]
-              : 2.3522219,
+            latitude: gps.location ? gps.location[0] : 48.856614,
+            longitude: gps.location ? gps.location[1] : 2.3522219,
             latitudeDelta: 0.15,
             longitudeDelta: 0.15,
           }}

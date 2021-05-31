@@ -15,14 +15,15 @@ import { StatusBar } from "expo-status-bar";
 import RestaurantsCard from "../components/RestaurantsCard";
 import FiltersBar from "../components/FiltersBar";
 import SearchInput from "../components/SearchInput";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Location from "expo-location";
 import types from "../seed/types.json";
 
-export default function RestaurantsScreen({
-  errorMessageLocation,
-  userLocation,
-}) {
+export default function RestaurantsScreen({ userLocation, setLocation }) {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingPlace, setIsLoadingPlace] = useState(true);
+  const [errorMessageLocation, setErrorMessageLocation] = useState("");
   // rayon actif
   const [isActive, setIsActive] = useState(false);
   //
@@ -30,6 +31,67 @@ export default function RestaurantsScreen({
   const [search, setSearch] = useState("");
 
   // let type = "vegan";
+
+  useEffect(() => {
+    const getPermissionAndLocation = async () => {
+      const tokenId = await AsyncStorage.getItem("userTokenAndId");
+      const user = JSON.parse(tokenId);
+      // console.log(user);
+      // setErrors(false);
+      // const result = await Location.getForegroundPermissionsAsync();
+      // if (result.status === "granted") {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      console.log(status);
+      if (status === "granted") {
+        // setErrors(true)
+        const { coords } = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Highest,
+        });
+        // const objCoordinate = {
+        //   lat: coords.latitude,
+        //   lng: coords.longitude,
+        // };
+
+        const tabCoordinate = [coords.latitude, coords.longitude];
+
+        try {
+          await axios.put(
+            `http://10.0.2.2:3200/user/update/${user.id}`,
+            // `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
+            {
+              location: tabCoordinate,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            }
+          );
+          // console.log(response.data);
+        } catch (e) {
+          console.log(e.response);
+          console.log("coordonnees ", e.message);
+          alert("Location not work");
+        }
+
+        let setResponse = JSON.stringify({
+          location: tabCoordinate,
+        });
+        setIsLoadingPlace(false);
+        setLocation(setResponse);
+        // console.log(tabCoordinate);
+        // setCoordinate(tabCoordinate);
+        // setIsLoading(false);
+        // console.log(coordinate);
+        // }
+      } else {
+        setErrorMessageLocation(
+          "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
+        );
+      }
+    };
+    getPermissionAndLocation();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,8 +116,10 @@ export default function RestaurantsScreen({
         console.log(error.message);
       }
     };
-    fetchData();
-  }, [typeEl]);
+    if (!isLoadingPlace) {
+      fetchData();
+    }
+  }, [typeEl, isLoadingPlace]);
 
   const filterText = (searchText) => {
     if (data !== undefined) {
@@ -82,7 +146,7 @@ export default function RestaurantsScreen({
     []
   );
 
-  return isLoading ? (
+  return isLoadingPlace && isLoading ? (
     <ActivityIndicator
       size="large"
       color={colors.purpleContainer}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableOpacity } from "react-native";
-import axios from "axios";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -21,7 +20,6 @@ import FavoritesScreen from "./containers/FavoritesScreen";
 import LoginScreen from "./containers/LoginScreen";
 import SignupScreen from "./containers/SignupScreen";
 import FiltersScreen from "./components/FiltersScreen";
-import * as Location from "expo-location";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -31,7 +29,6 @@ export default function App() {
   const [userTokenAndId, setUserTokenAndId] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   // const [isLoadingPlace, setIsLoadingPlace] = useState(true);
-  const [errorMessageLocation, setErrorMessageLocation] = useState("");
   // const [errors, setErrors] = useState(false);
   // const [coordinate, setCoordinate] = useState(null);
 
@@ -62,78 +59,12 @@ export default function App() {
 
       setIsLoading(false);
       setUserLocation(userLocation);
+      console.log("location root ", userLocation);
       setUserTokenAndId(userTokenAndId);
     };
 
     bootstrapAsync();
   }, []);
-
-  useEffect(() => {
-    const getPermissionAndLocation = async () => {
-      const tokenId = await AsyncStorage.getItem("userTokenAndId");
-      const user = JSON.parse(tokenId);
-      // console.log(user);
-      // setErrors(false);
-      // const result = await Location.getForegroundPermissionsAsync();
-      // if (result.status === "granted") {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      console.log(status);
-      if (status === "granted") {
-        // setErrors(true)
-        const { coords } = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Highest,
-        });
-        // const objCoordinate = {
-        //   lat: coords.latitude,
-        //   lng: coords.longitude,
-        // };
-
-        const tabCoordinate = [coords.latitude, coords.longitude];
-
-        try {
-          await axios.put(
-            `http://10.0.2.2:3200/user/update/${user.id}`,
-            // `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
-            {
-              location: tabCoordinate,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${user.token}`,
-              },
-            }
-          );
-          // console.log(response.data);
-        } catch (e) {
-          console.log(e.response);
-          console.log("coordonnees ", e.message);
-          alert("Location not work");
-        }
-
-        let setResponse = JSON.stringify({
-          location: tabCoordinate,
-        });
-
-        setLocation(setResponse);
-        // console.log(tabCoordinate);
-        // setCoordinate(tabCoordinate);
-        // setIsLoading(false);
-        // console.log(coordinate);
-        // }
-      } else {
-        setErrorMessageLocation(
-          "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
-        );
-      }
-    };
-    if (!isLoading && userTokenAndId) {
-      getPermissionAndLocation();
-    }
-  }, [isLoading]);
-
-  // useEffect(() => {
-
-  // }, []);
 
   return (
     <NavigationContainer>
@@ -200,7 +131,9 @@ export default function App() {
                               {...props}
                               activeOpacity={0.9}
                               onPress={() => {
-                                props.navigation.navigate("AroundMe");
+                                props.navigation.navigate("AroundMe", {
+                                  gps: userLocation,
+                                });
                               }}
                             >
                               <FontAwesome5
@@ -221,7 +154,7 @@ export default function App() {
                         {(props) => (
                           <RestaurantsScreen
                             {...props}
-                            errorMessageLocation={errorMessageLocation}
+                            setLocation={setLocation}
                             userLocation={userLocation}
                           />
                         )}
@@ -257,9 +190,7 @@ export default function App() {
                           headerTitleAlign: "center",
                         }}
                       >
-                        {(props) => (
-                          <MapScreen {...props} userLocation={userLocation} />
-                        )}
+                        {(props) => <MapScreen {...props} />}
                       </Stack.Screen>
                       <Stack.Screen
                         name="Filtres"

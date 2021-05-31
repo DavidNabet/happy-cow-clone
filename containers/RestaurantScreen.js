@@ -9,8 +9,8 @@ import * as Location from "expo-location";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 export default function RestaurantScreen({ route }) {
-  //   console.log(route.params.userLocation);
-  const { placeId, userLocation } = route.params;
+  console.log(route.params.userLocation);
+  const { placeId } = route.params;
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -64,7 +64,6 @@ export default function RestaurantScreen({ route }) {
           </View>
         </View>
         <View style={styles.middle_section}>
-          <View style={[styles.cols, styles.margin]}></View>
           <View
             style={{
               width: "100%",
@@ -74,9 +73,7 @@ export default function RestaurantScreen({ route }) {
             }}
           ></View>
           <View style={[styles.block_desc, styles.margin]}>
-            <Text style={styles.description}>
-              {data.description.split(" Open ")[0]}
-            </Text>
+            <Text style={styles.description}>{data.description}</Text>
           </View>
         </View>
       </View>
