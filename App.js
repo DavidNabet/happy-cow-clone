@@ -29,13 +29,12 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userTokenAndId, setUserTokenAndId] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
-  //
+  // Data Restaurants
   const [data, setData] = useState([]);
   const [isLoadingResto, setIsLoadingResto] = useState(true);
+  // Filters
   const [typeEl, setTypeEl] = useState(null);
-  // const [isLoadingPlace, setIsLoadingPlace] = useState(true);
-  // const [errors, setErrors] = useState(false);
-  // const [coordinate, setCoordinate] = useState(null);
+  const [rayon, setRayon] = useState(3);
 
   const setTokenAndId = async (objTokenAndId) => {
     if (objTokenAndId) {
@@ -62,9 +61,9 @@ export default function App() {
       const userTokenAndId = await AsyncStorage.getItem("userTokenAndId");
       const userLocation = await AsyncStorage.getItem("userLocation");
 
+      setIsLoading(false);
       setUserLocation(userLocation);
       setUserTokenAndId(userTokenAndId);
-      setIsLoading(false);
       console.log("location root ", userLocation);
       // console.log("token root ", userTokenAndId);
     };
@@ -78,7 +77,7 @@ export default function App() {
         const response = await axios.get("http://10.0.2.2:3200/restaurants", {
           params: {
             type: typeEl,
-            rayon: 5,
+            rayon: rayon,
             limit: 50,
           },
         });
@@ -87,15 +86,16 @@ export default function App() {
         // setIsLoading(false);
         setIsLoadingResto(false);
         setData(response.data);
+        console.log(rayon);
         // console.log(userLocation);
       } catch (error) {
-        console.log(error.message);
+        console.log("restaurants ", error.message);
       }
     };
     if (!isLoading) {
       fetchData();
     }
-  }, [isLoading, typeEl]);
+  }, [isLoading, typeEl, rayon]);
 
   return (
     <NavigationContainer>
@@ -247,7 +247,13 @@ export default function App() {
                           headerTitleStyle: { color: "white" },
                         }}
                       >
-                        {(props) => <FiltersScreen {...props} />}
+                        {(props) => (
+                          <FiltersScreen
+                            {...props}
+                            rayon={rayon}
+                            setRayon={setRayon}
+                          />
+                        )}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

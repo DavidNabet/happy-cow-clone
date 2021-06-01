@@ -10,7 +10,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { colors, border } from "../assets/js/colors";
-
+import FilterImage from "../components/FilterImage";
 export default function MapScreen({ route, data, isLoading }) {
   const { gps } = route.params;
   console.log("gps ", gps);
@@ -48,6 +48,13 @@ export default function MapScreen({ route, data, isLoading }) {
             longitudeDelta: 0.15,
           }}
           showsUserLocation={true}
+          minZoomLevel={2}
+          maxZoomLevel={15}
+          zoomEnabled={true}
+          showsIndoorLevelPicker={true}
+          zoomTapEnabled={true}
+          zoomControlEnabled={true}
+          loadingEnabled={true}
         >
           {data.map((marker) => {
             return (

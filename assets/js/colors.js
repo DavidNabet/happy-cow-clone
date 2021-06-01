@@ -5,7 +5,6 @@ const colors = {
   HealthStore: "#D6B728",
   VegStore: "#4D9141",
   Bakery: "#9C722A",
-  B_B: "#2285A2",
   Delivery: "#77AB41",
   Catering: "#20AE9F",
   Organization: "#903489",

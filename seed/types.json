@@ -36,12 +36,6 @@
     "name": "Bakery"
   },
   {
-    "type": "B_B",
-    "category": 4,
-    "icon": "../assets/icon/b&b-hotels.svg",
-    "name": "B_B"
-  },
-  {
     "type": "Delivery",
     "category": 5,
     "icon": "../assets/icon/delivery.svg",

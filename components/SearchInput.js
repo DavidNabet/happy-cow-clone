@@ -10,6 +10,8 @@ export default function SearchInput({ search, setSearch, filterText }) {
       <TextInput
         style={styles.input}
         placeholder="A proximité"
+        autoCapitalize="none"
+        autoCorrect={false}
         onChangeText={(text) => setSearch(filterText(text))}
       />
     </View>

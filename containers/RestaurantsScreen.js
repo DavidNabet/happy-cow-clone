@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import axios from "axios";
 import { colors } from "../assets/js/colors";
 import {
@@ -22,53 +22,22 @@ import types from "../seed/types.json";
 export default function RestaurantsScreen({
   userLocation,
   setLocation,
-  typeEl,
-  setTypeEl,
   data,
   isLoading,
+  typeEl,
+  setTypeEl,
 }) {
-  // const [data, setData] = useState();
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [isLoadingPlace, setIsLoadingPlace] = useState(true);
   const [errorMessageLocation, setErrorMessageLocation] = useState("");
-  // rayon actif
+  // search
   const [isActive, setIsActive] = useState(false);
-  //
-  // const [typeEl, setTypeEl] = useState(null);
   const [search, setSearch] = useState("");
-
-  // let type = "vegan";
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("http://10.0.2.2:3200/restaurants", {
-  //         params: {
-  //           type: typeEl,
-  //           rayon: 3,
-  //           limit: 20,
-  //         },
-  //       });
-  //       // console.log(response);
-  //       setIsActive(false);
-  //       setIsLoading(false);
-  //       setData(response.data);
-  //       // console.log(userLocation);
-  //     } catch (error) {
-  //       console.log("restaurants ", error.message);
-  //     }
-  //   };
-  //   if (!isLoadingPlace) {
-  //     fetchData();
-  //   }
-  // }, [typeEl, isLoadingPlace]);
+  const flatListRef = useRef(null);
 
   useEffect(() => {
     const getPermissionAndLocation = async () => {
       const tokenId = await AsyncStorage.getItem("userTokenAndId");
       const user = JSON.parse(tokenId);
       // console.log(user);
-      // setErrors(false);
       // const result = await Location.getForegroundPermissionsAsync();
       // if (result.status === "granted") {
       const { status, canAskAgain } =
@@ -79,10 +48,6 @@ export default function RestaurantsScreen({
         const { coords } = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.Highest,
         });
-        // const objCoordinate = {
-        //   lat: coords.latitude,
-        //   lng: coords.longitude,
-        // };
 
         const tabCoordinate = [coords.latitude, coords.longitude];
 
@@ -108,13 +73,7 @@ export default function RestaurantsScreen({
         let setResponse = JSON.stringify({
           location: tabCoordinate,
         });
-        // setIsLoadingPlace(false);
         setLocation(setResponse);
-        // console.log(tabCoordinate);
-        // setCoordinate(tabCoordinate);
-        // setIsLoading(false);
-        // console.log(coordinate);
-        // }
       } else {
         setErrorMessageLocation(
           "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"

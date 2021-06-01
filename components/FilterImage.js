@@ -4,6 +4,7 @@ import types from "../seed/types.json";
 
 export default function FilterImage({ type, large }) {
   const typeEl = types.filter((el, i) => el.type === type);
+  console.log(typeEl);
   let path;
   if (type !== undefined) {
     switch (typeEl[0].type) {
@@ -24,9 +25,6 @@ export default function FilterImage({ type, large }) {
         break;
       case "Bakery":
         path = require("../assets/png/bakery.png");
-        break;
-      case "B_B":
-        path = require("../assets/png/b&b-hotels.png");
         break;
       case "Delivery":
         path = require("../assets/png/delivery.png");
