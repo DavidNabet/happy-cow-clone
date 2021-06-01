@@ -1,31 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  ActivityIndicator,
-  Text,
-} from "react-native";
+import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { colors, border } from "../assets/js/colors";
-import FilterImage from "../components/FilterImage";
+// import FilterImage from "../components/FilterImage";
 export default function MapScreen({ route, data, isLoading }) {
   const { gps } = route.params;
   console.log("gps ", gps);
-  // const [data, setData] = useState([]);
-  // const [isLoading, setIsLoading] = useState(true);
-
   /* 
 
-              latitude: userLocation.location.lat
-              ? userLocation.location.lat
-              : 48.856614,
-            longitude: userLocation.location.lng
-              ? userLocation.location.lng
-              : 2.3522219,
-              -----------------------------------
+    latitude: userLocation.location.lat
+    ? userLocation.location.lat
+    : 48.856614,
+  longitude: userLocation.location.lng
+    ? userLocation.location.lng
+    : 2.3522219,
+    -----------------------------------
    
   */
 
@@ -48,15 +39,16 @@ export default function MapScreen({ route, data, isLoading }) {
             longitudeDelta: 0.15,
           }}
           showsUserLocation={true}
-          minZoomLevel={2}
+          minZoomLevel={4}
           maxZoomLevel={15}
+          scrollEnabled={true}
           zoomEnabled={true}
-          showsIndoorLevelPicker={true}
           zoomTapEnabled={true}
           zoomControlEnabled={true}
-          loadingEnabled={true}
+          toolbarEnabled={true}
         >
           {data.map((marker) => {
+            let type = marker.type;
             return (
               <Marker
                 key={marker.placeId}
@@ -66,7 +58,7 @@ export default function MapScreen({ route, data, isLoading }) {
                 }}
                 title={marker.name}
                 description={marker.description}
-              ></Marker>
+              />
             );
           })}
         </MapView>
@@ -91,7 +83,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: "100%",
+    height: "100%",
+    // flex: 1,
   },
 });

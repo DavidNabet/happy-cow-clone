@@ -5,6 +5,9 @@ import { colors, border } from "../assets/js/colors";
 import { useNavigation } from "@react-navigation/core";
 
 export default function FiltersBar({ typeEl, setTypeEl, data }) {
+  const [isPressedVegan, setIsPressedVegan] = useState(false);
+  const [isPressedVegetarian, setIsPressedVegetarian] = useState(false);
+  const [isPressedVegOptions, setIsPressedVegOptions] = useState(false);
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -14,7 +17,14 @@ export default function FiltersBar({ typeEl, setTypeEl, data }) {
             styles.block,
             typeEl === "vegan" ? styles.green : styles.borderDefault,
           ]}
-          onPress={() => setTypeEl("vegan")}
+          onPress={() => {
+            setIsPressedVegan(!isPressedVegan);
+            if (isPressedVegan) {
+              setTypeEl("vegan");
+            } else {
+              setTypeEl(undefined);
+            }
+          }}
         >
           <Image
             source={require("../assets/png/vegan.png")}
@@ -28,7 +38,14 @@ export default function FiltersBar({ typeEl, setTypeEl, data }) {
             styles.block,
             typeEl === "vegetarian" ? styles.purple : styles.borderDefault,
           ]}
-          onPress={() => setTypeEl("vegetarian")}
+          onPress={() => {
+            setIsPressedVegetarian(!isPressedVegetarian);
+            if (isPressedVegetarian) {
+              setTypeEl("vegetarian");
+            } else {
+              setTypeEl(undefined);
+            }
+          }}
         >
           <Image
             source={require("../assets/png/vegetarian.png")}
@@ -42,7 +59,14 @@ export default function FiltersBar({ typeEl, setTypeEl, data }) {
             styles.block,
             typeEl === "veg-options" ? styles.red : styles.borderDefault,
           ]}
-          onPress={() => setTypeEl("veg-options")}
+          onPress={() => {
+            setIsPressedVegOptions(!isPressedVegOptions);
+            if (isPressedVegOptions) {
+              setTypeEl("veg-options");
+            } else {
+              setTypeEl(undefined);
+            }
+          }}
         >
           <Image
             source={require("../assets/png/veg-options.png")}

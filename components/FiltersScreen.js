@@ -13,10 +13,24 @@ import types from "../seed/types.json";
 import CheckboxComp from "./CheckboxComp";
 import Slider from "@react-native-community/slider";
 
-export default function FiltersScreen({ rayon, setRayon }) {
+export default function FiltersScreen({ rayon, setRayon, setTypeEl }) {
   const { params } = useRoute();
   const navigation = useNavigation();
+  const [typeTab, setTypeTab] = useState([
+    {
+      type: "vegan",
+      status: true,
+    },
+    {
+      type: "vegetarian",
+      status: false,
+    },
+  ]);
   //   console.log(params.data.length);
+  console.log(typeTab);
+  const handleCheck = (index, checked) => {
+    console.log(`checkbox ${index} is ${checked}`);
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -38,13 +52,19 @@ export default function FiltersScreen({ rayon, setRayon }) {
           <Text style={styles.title}>Filtrer par type</Text>
           <>
             {types.map((type, i) => {
-              return <CheckboxComp key={i} type={type} />;
+              return <CheckboxComp key={i} type={type} onCheck={handleCheck} />;
             })}
           </>
         </View>
         <View style={styles.sections}></View>
       </View>
-      <Button title="Filtrer les restaurants" />
+      <Button
+        title="Reset le filtre des restaurants"
+        onPress={() => {
+          setTypeEl(undefined);
+          navigation.goBack("Restaurants");
+        }}
+      />
     </ScrollView>
   );
 }

@@ -14,6 +14,7 @@ export default function RestaurantScreen({ route, userLocation }) {
   const { placeId } = route.params;
   const [dataResto, setDataResto] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [likes, setLikes] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,7 +83,7 @@ export default function RestaurantScreen({ route, userLocation }) {
             </View>
           </View>
         </View>
-        <View style={styles.middle_section}>
+        <View style={styles.sections}>
           <View style={[styles.margin, styles.middle_cols]}>
             <View style={styles.middle_cols_block}>
               <FontAwesome5 name="pen" size={20} color="grey" />
@@ -116,6 +117,22 @@ export default function RestaurantScreen({ route, userLocation }) {
             </Text>
           </View>
         </View>
+        <View style={styles.sections}>
+          <View
+            style={{
+              width: "100%",
+              borderWidth: 1,
+              borderStyle: "solid",
+              borderColor: colors.grey,
+            }}
+          />
+          <View style={styles.margin}>
+            <Text style={styles.description}>
+              {dataResto.description !== undefined &&
+                dataResto.description.split(" Open ")[1]}
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -141,7 +158,7 @@ const styles = StyleSheet.create({
   barOptions: {
     position: "relative",
     zIndex: 1,
-    backgroundColor: colors.purpleContainer,
+    backgroundColor: colors.black,
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
@@ -188,7 +205,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginVertical: 12,
   },
-  middle_section: {
+  sections: {
     marginHorizontal: 10,
   },
   middle_cols: {

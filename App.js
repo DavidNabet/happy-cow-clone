@@ -12,8 +12,13 @@ import {
   Entypo,
   Feather,
 } from "@expo/vector-icons";
+//librairies
 import axios from "axios";
+import qs from "qs";
 import { colors } from "./assets/js/colors";
+// components
+import Bookmark from "./components/Bookmark";
+// containers
 import RestaurantsScreen from "./containers/RestaurantsScreen";
 import RestaurantScreen from "./containers/RestaurantScreen";
 import MapScreen from "./containers/MapScreen";
@@ -29,12 +34,15 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userTokenAndId, setUserTokenAndId] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
+  const [userFavoris, setUserFavoris] = useState(null);
   // Data Restaurants
   const [data, setData] = useState([]);
   const [isLoadingResto, setIsLoadingResto] = useState(true);
   // Filters
   const [typeEl, setTypeEl] = useState(null);
   const [rayon, setRayon] = useState(3);
+  // const [typeObj, setTypeObj] = useState([]);
+  // Favoris
 
   const setTokenAndId = async (objTokenAndId) => {
     if (objTokenAndId) {
@@ -44,6 +52,16 @@ export default function App() {
     }
 
     setUserTokenAndId(objTokenAndId);
+  };
+
+  const setFavoris = async (fav) => {
+    if (fav) {
+      AsyncStorage.setItem("fav", fav);
+    } else {
+      AsyncStorage.removeItem("fav");
+    }
+
+    setUserFavoris(fav);
   };
 
   const setLocation = async (location) => {
@@ -56,15 +74,21 @@ export default function App() {
     }
   };
 
+  // FAVORIS
+  // FAIRE LES FAVORIS
+
   useEffect(() => {
     const bootstrapAsync = async () => {
       const userTokenAndId = await AsyncStorage.getItem("userTokenAndId");
       const userLocation = await AsyncStorage.getItem("userLocation");
+      // const userFavoris = await AsyncStorage.getItem("fav");
 
       setIsLoading(false);
       setUserLocation(userLocation);
       setUserTokenAndId(userTokenAndId);
+      // setUserFavoris(userFavoris);
       console.log("location root ", userLocation);
+      // console.log("fav root ", userFavoris);
       // console.log("token root ", userTokenAndId);
     };
 
@@ -74,19 +98,27 @@ export default function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://10.0.2.2:3200/restaurants", {
+        const response = await axios.get(`http://10.0.2.2:3200/restaurants`, {
           params: {
-            type: typeEl,
             rayon: rayon,
             limit: 50,
+            type: [typeEl || undefined],
+          },
+          paramsSerializer: (params) => {
+            return qs.stringify(params, {
+              arrayFormat: "repeat",
+              encode: false,
+            });
           },
         });
-        // console.log(response);
+        console.log(typeof response.config.params.type);
+        console.log(response.config.params);
         // setIsActive(false);
         // setIsLoading(false);
         setIsLoadingResto(false);
         setData(response.data);
         console.log(rayon);
+        console.log(typeEl);
         // console.log(userLocation);
       } catch (error) {
         console.log("restaurants ", error.message);
@@ -198,17 +230,15 @@ export default function App() {
                         name="Restaurant"
                         options={{
                           headerStyle: {
-                            backgroundColor: colors.purpleContainer,
+                            backgroundColor: colors.lightGray,
                           },
-                          headerRight: () => (
-                            <TouchableOpacity {...props} activeOpacity={0.9}>
-                              <FontAwesome
-                                name="star-half-empty"
-                                size={20}
-                                color="transparent"
-                              />
-                            </TouchableOpacity>
-                          ),
+                          headerTitleStyle: {
+                            color: "transparent",
+                          },
+                          headerRight: () => <Bookmark />,
+                          headerRightContainerStyle: {
+                            marginRight: 15,
+                          },
                         }}
                       >
                         {(props) => (
@@ -252,6 +282,7 @@ export default function App() {
                             {...props}
                             rayon={rayon}
                             setRayon={setRayon}
+                            setTypeEl={setTypeEl}
                           />
                         )}
                       </Stack.Screen>

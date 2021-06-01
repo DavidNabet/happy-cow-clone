@@ -90,12 +90,6 @@ export default function RestaurantsScreen({
         if (data.name.toLowerCase().includes(searchText.toLowerCase())) {
           setIsActive(true);
           return true;
-        } else if (
-          data.description !== null &&
-          data.description.includes(searchText)
-        ) {
-          setIsActive(true);
-          return true;
         }
         return false;
       });

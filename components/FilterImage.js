@@ -4,7 +4,6 @@ import types from "../seed/types.json";
 
 export default function FilterImage({ type, large }) {
   const typeEl = types.filter((el, i) => el.type === type);
-  console.log(typeEl);
   let path;
   if (type !== undefined) {
     switch (typeEl[0].type) {
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   large: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
   },
 });

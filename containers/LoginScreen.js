@@ -17,8 +17,8 @@ export default function LoginScreen({ setTokenAndId, navigation }) {
   // token:
   // id:
   // const [coordinate, setCoordinate] = useState();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("dax@test.com");
+  const [password, setPassword] = useState("pass");
   const [errorMessage, setErrorMessage] = useState("");
   // const [errors, setErrors] = useState(false);
 
