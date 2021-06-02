@@ -16,20 +16,32 @@ import Slider from "@react-native-community/slider";
 export default function FiltersScreen({ rayon, setRayon, setTypeEl }) {
   const { params } = useRoute();
   const navigation = useNavigation();
-  const [typeTab, setTypeTab] = useState([
-    {
-      type: "vegan",
-      status: true,
-    },
-    {
-      type: "vegetarian",
-      status: false,
-    },
-  ]);
-  //   console.log(params.data.length);
+  const [typeTab, setTypeTab] = useState([]);
+
+  const addTypeTab = (index, type, checked) => {
+    // setTypeTab([...typeTab, { type, status: checked, id: index }]);
+    let typeCopy = [...typeTab];
+    if (!typeCopy[index].status) {
+    }
+    typeCopy.push({
+      type,
+      status: checked,
+      index: index,
+    });
+    setTypeTab(typeCopy);
+  };
   // console.log(typeTab);
-  const handleCheck = (index, checked) => {
-    console.log(`checkbox ${index} is ${checked}`);
+
+  const handleCheck = (index) => {
+    let typeCopy = [...typeTab];
+    typeCopy[index].status = !typeCopy[index].status;
+    setTypeTab(typeCopy);
+  };
+
+  const removeType = (index) => {
+    let typeCopy = [...typeTab];
+    typeCopy.splice(typeCopy.indexOf(typeCopy[index]), 1);
+    setTypeTab(typeCopy);
   };
 
   return (
@@ -52,7 +64,9 @@ export default function FiltersScreen({ rayon, setRayon, setTypeEl }) {
           <Text style={styles.title}>Filtrer par type</Text>
           <>
             {types.map((type, i) => {
-              return <CheckboxComp key={i} type={type} onCheck={handleCheck} />;
+              return (
+                <CheckboxComp key={i} id={i} type={type} onCheck={addTypeTab} />
+              );
             })}
           </>
         </View>

@@ -4,7 +4,7 @@ import { colors, border } from "../assets/js/colors";
 import FilterImage from "./FilterImage";
 import Checkbox from "expo-checkbox";
 
-export default function CheckboxComp({ type, onCheck }) {
+export default function CheckboxComp({ type, onCheck, id }) {
   const [isChecked, setChecked] = useState(false);
 
   return (
@@ -17,7 +17,7 @@ export default function CheckboxComp({ type, onCheck }) {
         value={isChecked}
         onValueChange={() => {
           setChecked(!isChecked);
-          onCheck(type.type, !isChecked);
+          onCheck(id, type.type, !isChecked);
         }}
       />
     </View>

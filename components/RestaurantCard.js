@@ -23,7 +23,7 @@ export default function RestaurantCard({
   navigation,
   gestionFavoris,
 }) {
-  const [favoris, setFavoris] = useState("white");
+  const [favoris, setFavoris] = useState("gray");
   useEffect(() => {
     const isFavorisExist = async () => {
       const fav = await AsyncStorage.getItem("fav");
@@ -65,27 +65,21 @@ export default function RestaurantCard({
                     />
                     <View style={styles.otherPictures}>
                       <Image
-                        style={{
-                          height: "50%",
-                          width: "100%",
-                          resizeMode: "cover",
-                        }}
+                        style={styles.second_img}
+                        resizeMode="cover"
                         source={{ uri: dataResto.pictures[1] }}
                       />
                       <TouchableOpacity
                         onPress={() => {
                           navigation.navigate("Gallery", {
                             images: dataResto.pictures,
+                            placeId: dataResto.placeId,
                           });
                         }}
                       >
                         <Image
-                          style={{
-                            height: "78%",
-                            width: 100,
-                            resizeMode: "cover",
-                            marginTop: 3,
-                          }}
+                          style={styles.third_img}
+                          resizeMode="cover"
                           source={{ uri: dataResto.pictures[2] }}
                         />
                         <View
@@ -107,7 +101,6 @@ export default function RestaurantCard({
                         >
                           {dataResto.pictures.length > 3 && (
                             <Text style={{ fontSize: 22, color: "white" }}>
-                              {" "}
                               <AntDesign name="plus" size={20} color="white" />
                               <Text>{dataResto.pictures.length - 3}</Text>
                             </Text>
@@ -143,23 +136,28 @@ export default function RestaurantCard({
               <Text style={styles.type}>{dataResto.type}</Text>
             </View>
             <View style={styles.row}>
-              <TouchableOpacity
-                onPress={() => {
-                  gestionFavoris({
-                    placeId: dataResto.placeId,
-                    name: dataResto.name,
-                    thumbnail: dataResto.thumbnail,
-                    type: dataResto.type,
-                  });
-                  setFavoris(!favoris);
-                }}
-              >
-                <FontAwesome
-                  name="star"
-                  size={20}
-                  color={favoris ? "white" : "gold"}
-                />
-              </TouchableOpacity>
+              <View style={styles.bookmark}>
+                <TouchableOpacity
+                  onPress={() => {
+                    gestionFavoris({
+                      placeId: dataResto.placeId,
+                      thumbnail: dataResto.thumbnail,
+                      name: dataResto.name,
+                      type: dataResto.type,
+                      description: dataResto.description.split(" Open ")[0],
+                    });
+                    setFavoris(!favoris);
+                  }}
+                >
+                  <FontAwesome
+                    name="heart"
+                    size={20}
+                    color={favoris ? "gray" : "tomato"}
+                  />
+                </TouchableOpacity>
+                <Text style={styles.txt_bookmark}>Favoris</Text>
+              </View>
+
               <DistanceLocation
                 data={dataResto.location}
                 userLocation={userLocation}
@@ -254,6 +252,25 @@ const styles = StyleSheet.create({
   first_img: {
     flex: 2,
     height: 200,
+  },
+  second_img: {
+    height: "50%",
+    width: "100%",
+  },
+  third_img: {
+    height: "80%",
+    width: 100,
+    marginTop: 3,
+  },
+  bookmark: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  txt_bookmark: {
+    color: "white",
+    textTransform: "uppercase",
+    fontSize: 14,
+    marginLeft: 8,
   },
   // otherImg: {
   //   flex: 1,
