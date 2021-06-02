@@ -27,7 +27,7 @@ export default function FiltersScreen({ rayon, setRayon, setTypeEl }) {
     },
   ]);
   //   console.log(params.data.length);
-  console.log(typeTab);
+  // console.log(typeTab);
   const handleCheck = (index, checked) => {
     console.log(`checkbox ${index} is ${checked}`);
   };

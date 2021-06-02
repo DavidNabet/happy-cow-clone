@@ -16,8 +16,6 @@ import {
 import axios from "axios";
 import qs from "qs";
 import { colors } from "./assets/js/colors";
-// components
-import Bookmark from "./components/Bookmark";
 // containers
 import RestaurantsScreen from "./containers/RestaurantsScreen";
 import RestaurantScreen from "./containers/RestaurantScreen";
@@ -26,6 +24,7 @@ import FavoritesScreen from "./containers/FavoritesScreen";
 import LoginScreen from "./containers/LoginScreen";
 import SignupScreen from "./containers/SignupScreen";
 import FiltersScreen from "./components/FiltersScreen";
+import GalleryScreen from "./containers/GalleryScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -34,7 +33,6 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [userTokenAndId, setUserTokenAndId] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
-  const [userFavoris, setUserFavoris] = useState(null);
   // Data Restaurants
   const [data, setData] = useState([]);
   const [isLoadingResto, setIsLoadingResto] = useState(true);
@@ -43,6 +41,7 @@ export default function App() {
   const [rayon, setRayon] = useState(3);
   // const [typeObj, setTypeObj] = useState([]);
   // Favoris
+  const [listFavoris, setListFavoris] = useState([]);
 
   const setTokenAndId = async (objTokenAndId) => {
     if (objTokenAndId) {
@@ -52,16 +51,6 @@ export default function App() {
     }
 
     setUserTokenAndId(objTokenAndId);
-  };
-
-  const setFavoris = async (fav) => {
-    if (fav) {
-      AsyncStorage.setItem("fav", fav);
-    } else {
-      AsyncStorage.removeItem("fav");
-    }
-
-    setUserFavoris(fav);
   };
 
   const setLocation = async (location) => {
@@ -75,20 +64,39 @@ export default function App() {
   };
 
   // FAVORIS
-  // FAIRE LES FAVORIS
+  const gestionFavoris = async (result) => {
+    const favCopy = [...listFavoris];
+    const exist = favCopy.find((elem) => elem.placeId === result.placeId);
+    if (!exist) {
+      favCopy.push(result);
+      setListFavoris(favCopy);
+      AsyncStorage.setItem("fav", JSON.stringify(favCopy));
+      // AsyncStorage.removeItem("fav");
+      console.log("favorisAdded ", favCopy);
+    } else {
+      const index = favCopy.indexOf(exist);
+      favCopy.splice(index, 1);
+      setListFavoris(favCopy);
+      AsyncStorage.setItem("fav", JSON.stringify(favCopy));
+      console.log("favorisRemoved ", favCopy);
+    }
+    // console.log("list ", listFavoris);
+  };
+
+  // const removeFavoris = async (id, result) => {};
 
   useEffect(() => {
     const bootstrapAsync = async () => {
       const userTokenAndId = await AsyncStorage.getItem("userTokenAndId");
       const userLocation = await AsyncStorage.getItem("userLocation");
-      // const userFavoris = await AsyncStorage.getItem("fav");
+      const fav = await AsyncStorage.getItem("fav");
 
       setIsLoading(false);
       setUserLocation(userLocation);
       setUserTokenAndId(userTokenAndId);
-      // setUserFavoris(userFavoris);
+      console.log("favoris", fav);
+
       console.log("location root ", userLocation);
-      // console.log("fav root ", userFavoris);
       // console.log("token root ", userTokenAndId);
     };
 
@@ -235,7 +243,6 @@ export default function App() {
                           headerTitleStyle: {
                             color: "transparent",
                           },
-                          headerRight: () => <Bookmark />,
                           headerRightContainerStyle: {
                             marginRight: 15,
                           },
@@ -245,6 +252,7 @@ export default function App() {
                           <RestaurantScreen
                             {...props}
                             userLocation={userLocation}
+                            gestionFavoris={gestionFavoris}
                           />
                         )}
                       </Stack.Screen>
@@ -285,6 +293,17 @@ export default function App() {
                             setTypeEl={setTypeEl}
                           />
                         )}
+                      </Stack.Screen>
+                      <Stack.Screen
+                        name="Gallery"
+                        options={{
+                          headerStyle: {
+                            backgroundColor: colors.purpleContainer,
+                          },
+                          headerTitleStyle: { color: "white" },
+                        }}
+                      >
+                        {(props) => <GalleryScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
