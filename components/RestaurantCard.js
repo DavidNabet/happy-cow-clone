@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  Image,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { border, colors } from "../assets/js/colors";
 import Rating from "../components/Rating";
 import {
@@ -24,6 +31,7 @@ export default function RestaurantCard({
   gestionFavoris,
 }) {
   const [favoris, setFavoris] = useState("gray");
+  const [coords, setCoords] = useState({});
   useEffect(() => {
     const isFavorisExist = async () => {
       const fav = await AsyncStorage.getItem("fav");
@@ -42,189 +50,228 @@ export default function RestaurantCard({
     isFavorisExist();
   }, [id]);
 
+  useEffect(() => {
+    const getPermission = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status === "granted") {
+        const { coords } = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Highest,
+        });
+        const coordinate = {
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        };
+        setCoords(coordinate);
+      } else {
+        alert("Permission not ok");
+      }
+    };
+    getPermission();
+  }, []);
+
   // const bgBar = () => {
   //   types.map((item, i) => {
   //     let color = Object.keys(colors).includes(item.name);
   //     return color ? Object.values(colors)[i] : "#222";
   //   });
   // };
-
+  console.log(userLocation);
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapper}>
-        <View style={styles.top_section}>
-          <View style={styles.cover}>
-            {dataResto.pictures !== undefined && (
-              <>
-                {dataResto.pictures.length > 1 ? (
-                  <>
-                    <Image
-                      style={styles.first_img}
-                      source={{ uri: dataResto.pictures[0] }}
-                      resizeMode="cover"
-                    />
-                    <View style={styles.otherPictures}>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.wrapper}>
+          <View style={styles.top_section}>
+            <View style={styles.cover}>
+              {dataResto.pictures !== undefined && (
+                <>
+                  {dataResto.pictures.length > 1 ? (
+                    <>
                       <Image
-                        style={styles.second_img}
+                        style={styles.first_img}
+                        source={{ uri: dataResto.pictures[0] }}
                         resizeMode="cover"
-                        source={{ uri: dataResto.pictures[1] }}
                       />
-                      <TouchableOpacity
-                        onPress={() => {
-                          navigation.navigate("Gallery", {
-                            images: dataResto.pictures,
-                            placeId: dataResto.placeId,
-                          });
-                        }}
-                      >
+                      <View style={styles.otherPictures}>
                         <Image
-                          style={styles.third_img}
+                          style={styles.second_img}
                           resizeMode="cover"
-                          source={{ uri: dataResto.pictures[2] }}
+                          source={{ uri: dataResto.pictures[1] }}
                         />
-                        <View
-                          style={{
-                            width: 100,
-                            height: 100,
-                            backgroundColor: "gray",
-                            position: "absolute",
-                            opacity: 0.4,
-                          }}
-                        ></View>
-                        <View
-                          style={{
-                            position: "absolute",
-                            opacity: 0.9,
-                            top: 35,
-                            left: 25,
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate("Gallery", {
+                              images: dataResto.pictures,
+                              placeId: dataResto.placeId,
+                            });
                           }}
                         >
-                          {dataResto.pictures.length > 3 && (
-                            <Text style={{ fontSize: 22, color: "white" }}>
-                              <AntDesign name="plus" size={20} color="white" />
-                              <Text>{dataResto.pictures.length - 3}</Text>
-                            </Text>
-                          )}
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  </>
-                ) : (
-                  <Image
-                    style={styles.cover_img}
-                    source={{ uri: dataResto.thumbnail }}
-                    resizeMode="cover"
-                  />
-                )}
-              </>
-            )}
-          </View>
-          <View style={styles.barOptions}>
-            <View style={styles.row}>
-              <Text style={styles.title}>{dataResto.name}</Text>
-              <View style={styles.image}>
-                <FilterImage type={dataResto.type} large />
-              </View>
+                          <Image
+                            style={styles.third_img}
+                            resizeMode="cover"
+                            source={{ uri: dataResto.pictures[2] }}
+                          />
+                          <View
+                            style={{
+                              width: 100,
+                              height: 100,
+                              backgroundColor: "gray",
+                              position: "absolute",
+                              opacity: 0.4,
+                            }}
+                          ></View>
+                          <View
+                            style={{
+                              position: "absolute",
+                              opacity: 0.9,
+                              top: 35,
+                              left: 25,
+                            }}
+                          >
+                            {dataResto.pictures.length > 3 && (
+                              <Text style={{ fontSize: 22, color: "white" }}>
+                                <AntDesign
+                                  name="plus"
+                                  size={20}
+                                  color="white"
+                                />
+                                <Text>{dataResto.pictures.length - 3}</Text>
+                              </Text>
+                            )}
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </>
+                  ) : (
+                    <Image
+                      style={styles.cover_img}
+                      source={{ uri: dataResto.thumbnail }}
+                      resizeMode="cover"
+                    />
+                  )}
+                </>
+              )}
             </View>
-            <View style={styles.row}>
-              <View style={{ flexDirection: "row" }}>
-                <Rating rating={Number(dataResto.rating)} />
-                {dataResto.vegan === 1 && (
-                  <Text style={styles.vegan}>Vegan</Text>
-                )}
+            <View style={styles.barOptions}>
+              <View style={styles.row}>
+                <Text style={styles.title}>{dataResto.name}</Text>
+                <View style={styles.image}>
+                  <FilterImage type={dataResto.type} large />
+                </View>
               </View>
-              <Text style={styles.type}>{dataResto.type}</Text>
-            </View>
-            <View style={styles.row}>
-              <View style={styles.bookmark}>
-                <TouchableOpacity
-                  onPress={() => {
-                    gestionFavoris({
-                      placeId: dataResto.placeId,
-                      thumbnail: dataResto.thumbnail,
-                      name: dataResto.name,
-                      type: dataResto.type,
-                      description: dataResto.description.split(" Open ")[0],
-                    });
-                    setFavoris(!favoris);
-                  }}
-                >
-                  <FontAwesome
-                    name="heart"
-                    size={20}
-                    color={favoris ? "gray" : "tomato"}
-                  />
-                </TouchableOpacity>
-                <Text style={styles.txt_bookmark}>Favoris</Text>
+              <View style={styles.row}>
+                <View style={{ flexDirection: "row" }}>
+                  <Rating rating={Number(dataResto.rating)} />
+                  {dataResto.vegan === 1 && (
+                    <Text style={styles.vegan}>Vegan</Text>
+                  )}
+                </View>
+                <Text style={styles.type}>{dataResto.type}</Text>
               </View>
+              <View style={styles.row}>
+                <View style={styles.bookmark}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      gestionFavoris({
+                        placeId: dataResto.placeId,
+                        thumbnail: dataResto.thumbnail,
+                        name: dataResto.name,
+                        type: dataResto.type,
+                        description: dataResto.description.split(" Open ")[0],
+                      });
+                      setFavoris(!favoris);
+                    }}
+                  >
+                    <FontAwesome
+                      name="heart"
+                      size={20}
+                      color={favoris ? "gray" : "tomato"}
+                    />
+                  </TouchableOpacity>
+                  <Text style={styles.txt_bookmark}>Favoris</Text>
+                </View>
 
-              <DistanceLocation
-                data={dataResto.location}
-                userLocation={userLocation}
-              />
+                <DistanceLocation
+                  data={dataResto.location}
+                  userLocation={userLocation}
+                />
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.sections}>
-          <View style={[styles.margin, styles.middle_cols]}>
-            <View style={styles.middle_cols_block}>
-              <FontAwesome5 name="pen" size={20} color="grey" />
-              <Text style={styles.middle_cols_text}>Ajouter un avis</Text>
+          <View style={styles.sections}>
+            <View style={[styles.margin, styles.middle_cols]}>
+              <View style={styles.middle_cols_block}>
+                <FontAwesome5 name="pen" size={20} color="grey" />
+                <Text style={styles.middle_cols_text}>Ajouter un avis</Text>
+              </View>
+              <View style={styles.middle_cols_block}>
+                <MaterialCommunityIcons
+                  name="camera-plus"
+                  size={20}
+                  color="grey"
+                />
+                <Text style={styles.middle_cols_text}>Ajouter une photo</Text>
+              </View>
+              <View style={styles.middle_cols_block}>
+                <FontAwesome5 name="phone-alt" size={20} color="grey" />
+                <Text style={styles.middle_cols_text}>Appeler</Text>
+              </View>
             </View>
-            <View style={styles.middle_cols_block}>
-              <MaterialCommunityIcons
-                name="camera-plus"
-                size={20}
-                color="grey"
-              />
-              <Text style={styles.middle_cols_text}>Ajouter une photo</Text>
-            </View>
-            <View style={styles.middle_cols_block}>
-              <FontAwesome5 name="phone-alt" size={20} color="grey" />
-              <Text style={styles.middle_cols_text}>Appeler</Text>
+            <View style={styles.hr} />
+            <View style={styles.margin}>
+              {dataResto.description !== null &&
+              dataResto.description !== undefined ? (
+                <Text style={styles.description}>
+                  {dataResto.description.split(" Open ")[0]}
+                </Text>
+              ) : (
+                <Text style={styles.description}>Pas de description</Text>
+              )}
             </View>
           </View>
-          <View
-            style={{
-              width: "100%",
-              borderWidth: 1,
-              borderStyle: "solid",
-              borderColor: colors.grey,
-            }}
-          />
-          <View style={styles.margin}>
-            {dataResto.description !== null &&
-            dataResto.description !== undefined ? (
-              <Text style={styles.description}>
-                {dataResto.description.split(" Open ")[0]}
-              </Text>
-            ) : (
-              <Text style={styles.description}>Pas de description</Text>
-            )}
-          </View>
-        </View>
-        <View style={styles.sections}>
-          <View
-            style={{
-              width: "100%",
-              borderWidth: 1,
-              borderStyle: "solid",
-              borderColor: colors.grey,
-            }}
-          />
-          <View style={styles.margin}>
-            {dataResto.description !== null &&
-            dataResto.description !== undefined ? (
-              <Text style={styles.description}>
-                {dataResto.description.split(" Open ")[1]}
-              </Text>
-            ) : (
-              <Text style={styles.description}>Pas d'horaires</Text>
-            )}
+          <View style={styles.sections}>
+            <View style={{ padding: 20 }}>
+              <MapView
+                style={styles.map}
+                provider={PROVIDER_GOOGLE}
+                initialRegion={{
+                  latitude: coords.latitude ? coords.latitude : 48.856614,
+                  longitude: coords.longitude ? coords.longitude : 2.3522219,
+                  latitudeDelta: 0.09,
+                  longitudeDelta: 0.09,
+                }}
+                showsUserLocation={true}
+                minZoomLevel={10}
+                maxZoomLevel={15}
+                zoomEnabled={true}
+                zoomEnabled={true}
+                zoomTapEnabled={true}
+              >
+                {dataResto.location !== undefined && (
+                  <Marker
+                    coordinate={{
+                      latitude: dataResto.location.lat,
+                      longitude: dataResto.location.lng,
+                    }}
+                  >
+                    <FilterImage type={dataResto.type} large />
+                  </Marker>
+                )}
+              </MapView>
+            </View>
+            <View style={styles.margin}>
+              {dataResto.description !== null &&
+              dataResto.description !== undefined ? (
+                <Text style={styles.description}>
+                  {dataResto.description.split(" Open ")[1]}
+                </Text>
+              ) : (
+                <Text style={styles.description}>Pas d'horaires</Text>
+              )}
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -272,51 +319,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginLeft: 8,
   },
-  // otherImg: {
-  //   flex: 1,
-  //   height: 200,
-  //   marginLeft: 3,
-  //   flexDirection: "column",
-  //   position: "relative",
-  // },
-  // second_img: {
-  //   width: "100%",
-  //   height: "50%",
-  //   position: "absolute",
-  //   backgroundColor: "#222",
-  //   opacity: 0.8,
-  //   top: 0,
-  //   right: 0,
-  //   left: 0,
-  // },
-  // last_img: {
-  //   width: "100%",
-  //   height: "50%",
-  //   position: "absolute",
-  //   marginTop: 3,
-  //   backgroundColor: "#222",
-  //   opacity: 0.8,
-  //   top: 100,
-  //   bottom: 0,
-  //   right: 0,
-  //   left: 0,
-  //   zIndex: 1,
-  // },
-  // block_last_img: {
-  //   flex: 1,
-  //   flexDirection: "column",
-  //   position: "relative",
-  // },
-  // text: {
-  //   position: "absolute",
-  //   width: "100%",
-  //   height: "100%",
-  //   top: 100,
-  //   bottom: 0,
-  //   right: 0,
-  //   left: 0,
-  //   fontSize: 16,
-  // },
+  hr: {
+    width: "100%",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.grey,
+  },
   otherPictures: {
     height: 197,
   },
@@ -392,5 +400,11 @@ const styles = StyleSheet.create({
   },
   description: {
     lineHeight: 24,
+  },
+  map: {
+    flexGrow: 1,
+    height: 200,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

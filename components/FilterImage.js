@@ -62,7 +62,7 @@ export default function FilterImage({ type, large }) {
     <Image
       source={path}
       style={large ? styles.large : styles.small}
-      resizeMode="cover"
+      resizeMode="contain"
     />
   );
 }
