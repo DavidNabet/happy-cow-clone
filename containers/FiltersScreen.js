@@ -8,42 +8,31 @@ import {
   ScrollView,
 } from "react-native";
 import { colors, border } from "../assets/js/colors";
+import Slider from "@react-native-community/slider";
 import { useRoute, useNavigation } from "@react-navigation/core";
 import types from "../seed/types.json";
-import CheckboxComp from "./CheckboxComp";
-import Slider from "@react-native-community/slider";
+import CheckboxComp from "../components/CheckboxComp";
 
 export default function FiltersScreen({ rayon, setRayon, setTypeEl }) {
   const { params } = useRoute();
   const navigation = useNavigation();
   const [typeTab, setTypeTab] = useState([]);
 
-  const addTypeTab = (index, type, checked) => {
-    // setTypeTab([...typeTab, { type, status: checked, id: index }]);
-    let typeCopy = [...typeTab];
-    if (!typeCopy[index].status) {
+  const addTypeTab = (type) => {
+    const checkType = [...typeTab];
+    const exist = checkType.find((elem) => elem === type);
+    if (!exist) {
+      checkType.push(type);
+      setTypeTab(checkType);
+      console.log("checkAdded ", checkType);
+    } else {
+      const index = checkType.indexOf(exist);
+      checkType.splice(index, 1);
+      setTypeTab(checkType);
+      console.log("checkRemoved ", checkType);
     }
-    typeCopy.push({
-      type,
-      status: checked,
-      index: index,
-    });
-    setTypeTab(typeCopy);
   };
   // console.log(typeTab);
-
-  const handleCheck = (index) => {
-    let typeCopy = [...typeTab];
-    typeCopy[index].status = !typeCopy[index].status;
-    setTypeTab(typeCopy);
-  };
-
-  const removeType = (index) => {
-    let typeCopy = [...typeTab];
-    typeCopy.splice(typeCopy.indexOf(typeCopy[index]), 1);
-    setTypeTab(typeCopy);
-  };
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.wrapper}>
@@ -75,8 +64,13 @@ export default function FiltersScreen({ rayon, setRayon, setTypeEl }) {
       <Button
         title="Reset le filtre des restaurants"
         onPress={() => {
-          setTypeEl(undefined);
-          navigation.goBack("Restaurants");
+          // setTypeEl(undefined);
+          navigation.navigate("Tab", {
+            screen: "Home",
+            params: {
+              typeTab,
+            },
+          });
         }}
       />
     </ScrollView>

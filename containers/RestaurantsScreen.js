@@ -31,7 +31,6 @@ export default function RestaurantsScreen({
   // search
   const [isActive, setIsActive] = useState(false);
   const [search, setSearch] = useState("");
-  const flatListRef = useRef(null);
 
   useEffect(() => {
     const getPermissionAndLocation = async () => {
@@ -84,16 +83,16 @@ export default function RestaurantsScreen({
   }, []);
 
   const filterText = (searchText) => {
-    if (data !== undefined) {
-      setIsActive(false);
-      return data.filter((data) => {
-        if (data.name.toLowerCase().includes(searchText.toLowerCase())) {
-          setIsActive(true);
-          return true;
-        }
-        return false;
-      });
-    }
+    // if (data !== undefined) {
+    setIsActive(false);
+    return data.filter((data) => {
+      if (data.name.toLowerCase().includes(searchText.toLowerCase())) {
+        setIsActive(true);
+        return true;
+      }
+      return false;
+    });
+    // }
   };
 
   const renderItem = useCallback(

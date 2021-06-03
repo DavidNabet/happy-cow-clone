@@ -7,22 +7,22 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { border, colors } from "../assets/js/colors";
-import Rating from "../components/Rating";
+import { border, colors, getColor } from "../assets/js/colors";
 import {
   FontAwesome5,
   MaterialCommunityIcons,
   FontAwesome,
   AntDesign,
 } from "@expo/vector-icons";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import * as Location from "expo-location";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// components
+import Rating from "../components/Rating";
 import DistanceLocation from "../components/DistanceLocation";
 import FilterImage from "../components/FilterImage";
-import * as Location from "expo-location";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-// components
-// import StarIcon from "../components/StarIcon";
-// import types from "../seed/types.json";
+import types from "../seed/types.json";
+
 export default function RestaurantCard({
   dataResto,
   id,
@@ -71,10 +71,16 @@ export default function RestaurantCard({
 
   // const bgBar = () => {
   //   types.map((item, i) => {
-  //     let color = Object.keys(colors).includes(item.name);
-  //     return color ? Object.values(colors)[i] : "#222";
+  //     let color = getColor(item.type);
+  //     let c = color ? item.color : "#222";
+  //     console.log(c);
+  //     if (dataResto.type) {
+  //       return c[i];
+  //     }
+  //     // return c;
   //   });
   // };
+
   console.log(userLocation);
   return (
     <ScrollView>
@@ -151,7 +157,13 @@ export default function RestaurantCard({
                 </>
               )}
             </View>
-            <View style={styles.barOptions}>
+            <View
+              style={[
+                styles.barOptions,
+                { backgroundColor: "#222" },
+                // { backgroundColor: bgBar() }
+              ]}
+            >
               <View style={styles.row}>
                 <Text style={styles.title}>{dataResto.name}</Text>
                 <View style={styles.image}>
@@ -253,7 +265,7 @@ export default function RestaurantCard({
                       longitude: dataResto.location.lng,
                     }}
                   >
-                    <FilterImage type={dataResto.type} large />
+                    <FilterImage type={dataResto.type} />
                   </Marker>
                 )}
               </MapView>
@@ -331,7 +343,7 @@ const styles = StyleSheet.create({
   barOptions: {
     position: "relative",
     zIndex: 1,
-    backgroundColor: colors.black,
+    // backgroundColor: bgBar(),
     paddingHorizontal: 10,
     paddingVertical: 5,
   },

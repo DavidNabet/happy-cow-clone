@@ -3,90 +3,105 @@
     "type": "vegan",
     "icon": "../assets/icon/vegan.svg",
     "name": "vegan",
-    "category": 0
+    "category": 0,
+    "color": "#21860C"
   },
   {
     "type": "vegetarian",
     "icon": "../assets/icon/vegetarian.svg",
     "name": "vegetarian",
-    "category": 0
+    "category": 0,
+    "color": "#8B2092"
   },
   {
     "type": "veg-options",
     "icon": "../assets/icon/veg-options.svg",
     "name": "vegOptions",
-    "category": 0
+    "category": 0,
+    "color": "#DC6362"
   },
   {
     "type": "Health Store",
     "category": 1,
     "icon": "../assets/icon/health-store.svg",
-    "name": "HealthStore"
+    "name": "HealthStore",
+    "color": "#D6B728"
   },
   {
     "type": "Veg Store",
     "category": 2,
     "icon": "../assets/icon/veg-store.svg",
-    "name": "VegStore"
+    "name": "VegStore",
+    "color": "#4D9141"
   },
   {
     "type": "Bakery",
     "category": 3,
     "icon": "../assets/icon/bakery.svg",
-    "name": "Bakery"
+    "name": "Bakery",
+    "color": "#9C722A"
   },
   {
     "type": "Delivery",
     "category": 5,
     "icon": "../assets/icon/delivery.svg",
-    "name": "Delivery"
+    "name": "Delivery",
+    "color": "#77AB41"
   },
   {
     "type": "Catering",
     "category": 6,
     "icon": "../assets/icon/catering.svg",
-    "name": "Catering"
+    "name": "Catering",
+    "color": "#20AE9F"
   },
   {
     "type": "Organization",
     "category": 7,
     "icon": "../assets/icon/organization.svg",
-    "name": "Organization"
+    "name": "Organization",
+    "color": "#903489"
   },
   {
     "type": "Food Truck",
     "category": 10,
     "icon": "../assets/icon/food-truck.svg",
-    "name": "FoodTruck"
+    "name": "FoodTruck",
+    "color": "#F1592A"
   },
   {
     "type": "Market Vendor",
     "category": 11,
     "icon": "../assets/icon/market-vendor.svg",
-    "name": "MarketVendor"
+    "name": "MarketVendor",
+    "color": "#2D3997"
   },
   {
     "type": "Ice Cream",
     "category": 12,
     "icon": "../assets/icon/ice-cream.svg",
-    "name": "IceCream"
+    "name": "IceCream",
+    "color": "#EF447F"
   },
   {
     "type": "Juice Bar",
     "category": 13,
     "icon": "../assets/icon/juice-bar.svg",
-    "name": "JuiceBar"
+    "name": "JuiceBar",
+    "color": "#FBB040"
   },
   {
     "type": "Professional",
     "category": 14,
     "icon": "../assets/icon/vegan-professional.svg",
-    "name": "Professional"
+    "name": "Professional",
+    "color": "#006739"
   },
   {
     "type": "Other",
     "category": 99,
     "icon": "../assets/icon/other.svg",
-    "name": "Other"
+    "name": "Other",
+    "color": "#3F74BA"
   }
 ]

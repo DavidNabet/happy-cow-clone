@@ -15,7 +15,7 @@ import {
 //librairies
 import axios from "axios";
 import qs from "qs";
-import { colors } from "./assets/js/colors";
+import { colors, getColor } from "./assets/js/colors";
 // containers
 import RestaurantsScreen from "./containers/RestaurantsScreen";
 import RestaurantScreen from "./containers/RestaurantScreen";
@@ -23,7 +23,7 @@ import MapScreen from "./containers/MapScreen";
 import FavoritesScreen from "./containers/FavoritesScreen";
 import LoginScreen from "./containers/LoginScreen";
 import SignupScreen from "./containers/SignupScreen";
-import FiltersScreen from "./components/FiltersScreen";
+import FiltersScreen from "./containers/FiltersScreen";
 import GalleryScreen from "./containers/GalleryScreen";
 
 const Tab = createBottomTabNavigator();
@@ -109,7 +109,7 @@ export default function App() {
         const response = await axios.get(`http://10.0.2.2:3200/restaurants`, {
           params: {
             rayon: rayon,
-            limit: 50,
+            limit: 80,
             type: [typeEl || undefined],
           },
           paramsSerializer: (params) => {
@@ -155,13 +155,15 @@ export default function App() {
       ) : (
         <Stack.Navigator>
           <Stack.Screen name="Tab" options={{ headerShown: false }}>
-            {() => (
+            {(props) => (
               <Tab.Navigator
                 tabBarOptions={{
                   activeTintColor: colors.purpleContainer,
                   inactiveTintColor: "gray",
                 }}
               >
+                {console.log(props.route.params)}
+
                 <Tab.Screen
                   name="Home"
                   options={{

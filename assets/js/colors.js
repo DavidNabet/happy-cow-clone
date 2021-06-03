@@ -28,4 +28,26 @@ const border = {
   borderColor: "black",
 };
 
-export { colors, border };
+const getColor = (type) => {
+  if (type === "Veg Store") {
+    return "veg-store";
+  } else if (type === "Health Store") {
+    return "health-store";
+  } else if (type === "Veg Store") {
+    return "veg-store";
+  } else if (type === "Ice Cream") {
+    return "ice-cream";
+  } else if (type === "Juice Bar") {
+    return "juice-bar";
+  } else if (type === "B&B") {
+    return "b-and-b";
+  } else if (type === "Market Vendor") {
+    return "market-vendor";
+  } else if (type === "Food Truck") {
+    return "food-truck";
+  } else {
+    return type.toLowerCase();
+  }
+};
+
+export { colors, border, getColor };
