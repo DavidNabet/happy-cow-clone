@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { colors, border } from "../assets/js/colors";
 // import FilterImage from "../components/FilterImage";

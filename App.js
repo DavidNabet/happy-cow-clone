@@ -40,6 +40,7 @@ export default function App() {
   const [typeEl, setTypeEl] = useState(null);
   const [rayon, setRayon] = useState(3);
   const [typeTab, setTypeTab] = useState([]);
+  const [limit, setLimit] = useState(30);
   // Favoris
   const [listFavoris, setListFavoris] = useState([]);
 
@@ -71,7 +72,6 @@ export default function App() {
       favCopy.push(result);
       setListFavoris(favCopy);
       AsyncStorage.setItem("fav", JSON.stringify(favCopy));
-      // AsyncStorage.removeItem("fav");
       console.log("favorisAdded ", favCopy);
     } else {
       const index = favCopy.indexOf(exist);
@@ -82,8 +82,6 @@ export default function App() {
     }
     // console.log("list ", listFavoris);
   };
-
-  // const removeFavoris = async (id, result) => {};
 
   useEffect(() => {
     const bootstrapAsync = async () => {
@@ -97,7 +95,6 @@ export default function App() {
       console.log("favoris", fav);
 
       console.log("location root ", userLocation);
-      // console.log("token root ", userTokenAndId);
     };
 
     bootstrapAsync();
@@ -109,7 +106,7 @@ export default function App() {
         const response = await axios.get(`http://10.0.2.2:3200/restaurants`, {
           params: {
             rayon: rayon,
-            limit: 150,
+            limit: limit,
             type: typeTab.length > 0 ? typeTab : [typeEl || undefined],
           },
           paramsSerializer: (params) => {
@@ -121,12 +118,10 @@ export default function App() {
         });
         // console.log(typeof response.config.params.type);
         console.log(response.config.params);
-        // setIsLoading(false);
         setIsLoadingResto(false);
         setData(response.data);
         console.log(rayon);
         console.log(typeEl);
-        // console.log(userLocation);
       } catch (error) {
         console.log("restaurants ", error.message);
       }
@@ -134,7 +129,7 @@ export default function App() {
     if (!isLoading) {
       fetchData();
     }
-  }, [isLoading, typeEl, rayon, typeTab]);
+  }, [isLoading, typeEl, rayon, typeTab, limit]);
 
   return (
     <NavigationContainer>
@@ -294,6 +289,8 @@ export default function App() {
                             setTypeTab={setTypeTab}
                             setRayon={setRayon}
                             setTypeEl={setTypeEl}
+                            limit={limit}
+                            setLimit={setLimit}
                           />
                         )}
                       </Stack.Screen>

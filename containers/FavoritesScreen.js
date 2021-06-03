@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { colors } from "../assets/js/colors";
 // liste des favoris
 export default function FavoritesScreen({ navigation, route }) {
   // Pas d'autre choix que de stocker l'async storage dans un state
@@ -27,7 +28,15 @@ export default function FavoritesScreen({ navigation, route }) {
       <View style={styles.wrapper}>
         {store.length > 0 ? (
           store.map((result) => (
-            <View key={result.placeId} style={styles.items}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Restaurant", {
+                  placeId: result.placeId,
+                });
+              }}
+              key={result.placeId}
+              style={styles.items}
+            >
               <View style={[styles.row, styles.stretch]}>
                 <Image
                   source={{ uri: result.thumbnail }}
@@ -43,7 +52,7 @@ export default function FavoritesScreen({ navigation, route }) {
                   </Text>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           ))
         ) : store === null || store.length === 0 ? (
           <Text>Pas de favoris</Text>
@@ -56,7 +65,7 @@ export default function FavoritesScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "lightgray",
+    backgroundColor: colors.lightGray,
   },
   wrapper: {
     flex: 1,

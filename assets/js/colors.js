@@ -25,7 +25,7 @@ const colors = {
 const border = {
   borderWidth: 1,
   borderStyle: "solid",
-  borderColor: "black",
+  borderColor: colors.lightGray,
 };
 
 const getColor = (type) => {

@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { colors, border } from "../assets/js/colors";
 import Slider from "@react-native-community/slider";
-import { useRoute, useNavigation } from "@react-navigation/core";
+import DropDownPicker from "react-native-dropdown-picker";
 import types from "../seed/types.json";
 import CheckboxComp from "../components/CheckboxComp";
 
@@ -19,9 +19,21 @@ export default function FiltersScreen({
   setTypeEl,
   typeTab,
   setTypeTab,
+  limit,
+  setLimit,
+  navigation,
 }) {
-  const { params } = useRoute();
-  const navigation = useNavigation();
+  // Dropdown
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "50 résultats", value: 50 },
+    { label: "100 résultats", value: 100 },
+    { label: "200 résultats", value: 200 },
+    { label: "300 résultats", value: 300 },
+    { label: "500 résultats", value: 500 },
+    { label: "1000 résultats", value: 1000 },
+  ]);
 
   const addTypeTab = (type) => {
     const checkType = [...typeTab];
@@ -39,7 +51,7 @@ export default function FiltersScreen({
   };
   // console.log(typeTab);
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} nestedScrollEnabled={true}>
       <View style={styles.wrapper}>
         <View style={styles.sections}>
           <Text style={styles.title}>Rayon</Text>
@@ -55,6 +67,23 @@ export default function FiltersScreen({
           </View>
         </View>
         <View style={styles.sections}>
+          <Text style={styles.title}>Nombre maximale de résultats</Text>
+          <DropDownPicker
+            placeholder="Afficher plus de 50 résultats"
+            open={open}
+            value={value}
+            items={items}
+            itemKey="label"
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setItems}
+            onChangeValue={() => setLimit(value)}
+            listMode="SCROLLVIEW"
+            maxHeight={300}
+            selectedItemLabelStyle={{ color: colors.vegetarien }}
+          />
+        </View>
+        <View style={styles.sections}>
           <Text style={styles.title}>Filtrer par type</Text>
           <>
             {types.map((type, i) => {
@@ -64,7 +93,6 @@ export default function FiltersScreen({
             })}
           </>
         </View>
-        <View style={styles.sections}></View>
       </View>
       <Button
         title="Voir les résultats des restaurants"
@@ -87,13 +115,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   sections: {
-    marginVertical: 5,
+    marginVertical: 8,
     flexDirection: "column",
     justifyContent: "flex-start",
   },
   title: {
     fontSize: 18,
     textAlign: "left",
+    marginBottom: 10,
   },
   slider: {},
 });

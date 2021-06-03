@@ -1,5 +1,5 @@
 import React from "react";
-import { colors, border } from "../assets/js/colors";
+import { border } from "../assets/js/colors";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import Rating from "./Rating";
@@ -96,10 +96,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
   },
-  block_last_row: {},
   text: {
     fontSize: 12,
     color: "black",
+    width: "100%",
   },
   image: {
     width: 20,
