@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableOpacity } from "react-native";
+// navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -8,14 +9,12 @@ import {
   Ionicons,
   MaterialIcons,
   FontAwesome5,
-  FontAwesome,
   Entypo,
-  Feather,
 } from "@expo/vector-icons";
 //librairies
 import axios from "axios";
 import qs from "qs";
-import { colors, getColor } from "./assets/js/utils";
+import { colors } from "./assets/js/utils";
 // containers
 import RestaurantsScreen from "./containers/RestaurantsScreen";
 import RestaurantScreen from "./containers/RestaurantScreen";
@@ -104,19 +103,23 @@ export default function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://10.0.2.2:3200/restaurants`, {
-          params: {
-            rayon: rayon,
-            limit: limit,
-            type: typeTab.length > 0 ? typeTab : [typeEl || undefined],
-          },
-          paramsSerializer: (params) => {
-            return qs.stringify(params, {
-              arrayFormat: "repeat",
-              encode: false,
-            });
-          },
-        });
+        const response = await axios.get(
+          // `http://10.0.2.2:3200/restaurants`,
+          `https://happy-cow-back-project.herokuapp.com/restaurants`,
+          {
+            params: {
+              rayon: rayon,
+              limit: limit,
+              type: typeTab.length > 0 ? typeTab : [typeEl || undefined],
+            },
+            paramsSerializer: (params) => {
+              return qs.stringify(params, {
+                arrayFormat: "repeat",
+                encode: false,
+              });
+            },
+          }
+        );
         // console.log(typeof response.config.params.type);
         console.log(response.config.params);
         setIsLoadingResto(false);
@@ -229,6 +232,7 @@ export default function App() {
                             userLocation={userLocation}
                             typeEl={typeEl}
                             setTypeEl={setTypeEl}
+                            setTypeTab={setTypeTab}
                           />
                         )}
                       </Stack.Screen>

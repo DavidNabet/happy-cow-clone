@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { colors, border } from "../assets/js/utils";
 
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, TextInput, StyleSheet } from "react-native";
 
 export default function SearchInput({ search, setSearch, filterText }) {
-  //   console.log(filterText(""));
   return (
     <View style={styles.container}>
       <TextInput
@@ -20,8 +19,6 @@ export default function SearchInput({ search, setSearch, filterText }) {
 
 const styles = StyleSheet.create({
   container: {
-    // maxHeight: 50,
-    // flex: 1,
     backgroundColor: colors.purpleContainer,
   },
   input: {

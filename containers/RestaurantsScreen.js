@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { colors } from "../assets/js/utils";
 import {
-  View,
   Text,
   StyleSheet,
   FlatList,
@@ -17,7 +16,6 @@ import FiltersBar from "../components/FiltersBar";
 import SearchInput from "../components/SearchInput";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
-import types from "../seed/types.json";
 
 export default function RestaurantsScreen({
   userLocation,
@@ -26,6 +24,7 @@ export default function RestaurantsScreen({
   isLoading,
   typeEl,
   setTypeEl,
+  setTypeTab,
 }) {
   const [errorMessageLocation, setErrorMessageLocation] = useState("");
   // search
@@ -37,8 +36,6 @@ export default function RestaurantsScreen({
       const tokenId = await AsyncStorage.getItem("userTokenAndId");
       const user = JSON.parse(tokenId);
       // console.log(user);
-      // const result = await Location.getForegroundPermissionsAsync();
-      // if (result.status === "granted") {
       const { status, canAskAgain } =
         await Location.requestForegroundPermissionsAsync();
       console.log(status);
@@ -52,7 +49,8 @@ export default function RestaurantsScreen({
 
         try {
           await axios.put(
-            `http://10.0.2.2:3200/user/update/${user.id}`,
+            // `http://10.0.2.2:3200/user/update/${user.id}`,
+            `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
             {
               location: tabCoordinate,
             },
@@ -83,7 +81,6 @@ export default function RestaurantsScreen({
   }, []);
 
   const filterText = (searchText) => {
-    // if (data !== undefined) {
     setIsActive(false);
     return data.filter((data) => {
       if (data.name.toLowerCase().includes(searchText.toLowerCase())) {
@@ -92,7 +89,6 @@ export default function RestaurantsScreen({
       }
       return false;
     });
-    // }
   };
 
   const renderItem = useCallback(
@@ -117,7 +113,12 @@ export default function RestaurantsScreen({
         setSearch={setSearch}
         filterText={filterText}
       />
-      <FiltersBar data={data} setTypeEl={setTypeEl} typeEl={typeEl} />
+      <FiltersBar
+        data={data}
+        setTypeEl={setTypeEl}
+        typeEl={typeEl}
+        setTypeTab={setTypeTab}
+      />
       {isActive && search !== null ? (
         <FlatList
           data={search}

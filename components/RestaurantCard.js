@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { border, colors, getColor } from "../assets/js/utils";
+import { colors } from "../assets/js/utils";
+// icon
 import {
   FontAwesome5,
   MaterialCommunityIcons,
@@ -21,7 +22,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Rating from "../components/Rating";
 import DistanceLocation from "../components/DistanceLocation";
 import FilterImage from "../components/FilterImage";
-import types from "../seed/types.json";
 
 export default function RestaurantCard({
   dataResto,
@@ -32,6 +32,7 @@ export default function RestaurantCard({
 }) {
   const [favoris, setFavoris] = useState("gray");
   const [coords, setCoords] = useState({});
+  // Si les favoris existes, on les appelle depuis l'Async Storage
   useEffect(() => {
     const isFavorisExist = async () => {
       const fav = await AsyncStorage.getItem("fav");
@@ -68,18 +69,6 @@ export default function RestaurantCard({
     };
     getPermission();
   }, []);
-
-  // const bgBar = () => {
-  //   types.map((item, i) => {
-  //     let color = getColor(item.type);
-  //     let c = color ? item.color : "#222";
-  //     console.log(c);
-  //     if (dataResto.type) {
-  //       return c[i];
-  //     }
-  //     // return c;
-  //   });
-  // };
 
   console.log(userLocation);
   return (
@@ -157,13 +146,7 @@ export default function RestaurantCard({
                 </>
               )}
             </View>
-            <View
-              style={[
-                styles.barOptions,
-                { backgroundColor: "#222" },
-                // { backgroundColor: bgBar() }
-              ]}
-            >
+            <View style={[styles.barOptions, { backgroundColor: "#222" }]}>
               <View style={styles.row}>
                 <Text style={styles.title}>{dataResto.name}</Text>
                 <View style={styles.image}>

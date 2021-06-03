@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-  Button,
   Image,
   Text,
   TextInput,
@@ -21,11 +20,15 @@ export default function SignupScreen({ setTokenAndId, navigation }) {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://10.0.2.2:3200/user/signup", {
-        email: email,
-        username: username,
-        password: password,
-      });
+      const response = await axios.post(
+        // "http://10.0.2.2:3200/user/signup",
+        "https://happy-cow-back-project.herokuapp.com/user/signup",
+        {
+          email: email,
+          username: username,
+          password: password,
+        }
+      );
 
       console.log("response", response);
       if (response.data) {
@@ -75,18 +78,21 @@ export default function SignupScreen({ setTokenAndId, navigation }) {
               style={styles.input}
               placeholder="adresse mail"
               keyboardType="email-address"
+              autoCapitalize="none"
               value={email}
               onChangeText={(email) => setEmail(email)}
             />
             <TextInput
               style={styles.input}
               placeholder="nom d'utilisateur"
+              autoCapitalize="none"
               value={username}
               onChangeText={(username) => setUsername(username)}
             />
             <TextInput
               style={styles.input}
               placeholder="mot de passe"
+              autoCapitalize="none"
               value={password}
               onChangeText={(password) => setPassword(password)}
               secureTextEntry={true}
@@ -94,6 +100,7 @@ export default function SignupScreen({ setTokenAndId, navigation }) {
             <TextInput
               style={styles.input}
               placeholder="confirmer votre mot de passe"
+              autoCapitalize="none"
               value={confirmPassword}
               onChangeText={(confirmPassword) =>
                 setConfirmPassword(confirmPassword)

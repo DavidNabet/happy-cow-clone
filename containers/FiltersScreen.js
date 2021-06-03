@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Button,
-  ScrollView,
-} from "react-native";
-import { colors, border } from "../assets/js/utils";
+import { View, Text, StyleSheet, Button, ScrollView } from "react-native";
+import { colors } from "../assets/js/utils";
 import Slider from "@react-native-community/slider";
 import DropDownPicker from "react-native-dropdown-picker";
 import types from "../seed/types.json";
@@ -16,7 +9,6 @@ import CheckboxComp from "../components/CheckboxComp";
 export default function FiltersScreen({
   rayon,
   setRayon,
-  setTypeEl,
   typeTab,
   setTypeTab,
   limit,
@@ -41,12 +33,12 @@ export default function FiltersScreen({
     if (!exist) {
       checkType.push(type);
       setTypeTab(checkType);
-      console.log("checkAdded ", checkType);
+      console.log("checkAdded ", type);
     } else {
       const index = checkType.indexOf(exist);
       checkType.splice(index, 1);
       setTypeTab(checkType);
-      console.log("checkRemoved ", checkType);
+      console.log("checkRemoved ", type);
     }
   };
   // console.log(typeTab);
@@ -69,7 +61,7 @@ export default function FiltersScreen({
         <View style={styles.sections}>
           <Text style={styles.title}>Nombre maximale de résultats</Text>
           <DropDownPicker
-            placeholder="Afficher plus de 50 résultats"
+            placeholder={`Afficher plus de ${limit} résultats`}
             open={open}
             value={value}
             items={items}
@@ -87,9 +79,7 @@ export default function FiltersScreen({
           <Text style={styles.title}>Filtrer par type</Text>
           <>
             {types.map((type, i) => {
-              return (
-                <CheckboxComp key={i} id={i} type={type} onCheck={addTypeTab} />
-              );
+              return <CheckboxComp key={i} type={type} onCheck={addTypeTab} />;
             })}
           </>
         </View>

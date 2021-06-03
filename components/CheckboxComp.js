@@ -3,7 +3,7 @@ import Checkbox from "expo-checkbox";
 import { View, Text, StyleSheet } from "react-native";
 import FilterImage from "./FilterImage";
 
-export default function CheckboxComp({ type, onCheck, id }) {
+export default function CheckboxComp({ type, onCheck }) {
   const [isChecked, setChecked] = useState(false);
 
   return (

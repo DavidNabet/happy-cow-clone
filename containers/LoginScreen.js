@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Image,
   Text,
@@ -8,26 +8,25 @@ import {
   StyleSheet,
 } from "react-native";
 import axios from "axios";
-import { colors, border } from "../assets/js/utils";
+import { colors } from "../assets/js/utils";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-// import * as Location from "expo-location";
-
 export default function LoginScreen({ setTokenAndId, navigation }) {
-  // token:
-  // id:
-  // const [coordinate, setCoordinate] = useState();
-  const [email, setEmail] = useState("dax@test.com");
-  const [password, setPassword] = useState("pass");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   // const [errors, setErrors] = useState(false);
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://10.0.2.2:3200/user/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        // "http://10.0.2.2:3200/user/login",
+        "https://happy-cow-back-project.herokuapp.com/user/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
       console.log("response", response);
       if (response.status === 200) {
         alert("Welcome to HappyCow App !");
@@ -76,11 +75,13 @@ export default function LoginScreen({ setTokenAndId, navigation }) {
               onChangeText={(email) => setEmail(email)}
               value={email}
               autoCompleteType="email"
+              autoCapitalize="none"
               keyboardType="email-address"
             />
             <TextInput
               style={styles.input}
               placeholder="mot de passe"
+              autoCapitalize="none"
               onChangeText={(password) => setPassword(password)}
               value={password}
               secureTextEntry={true}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator } from "react-native";
 import axios from "axios";
-import { border, colors } from "../assets/js/utils";
+import { colors } from "../assets/js/utils";
 
 import RestaurantCard from "../components/RestaurantCard";
 export default function RestaurantScreen({
@@ -10,7 +10,6 @@ export default function RestaurantScreen({
   navigation,
   gestionFavoris,
 }) {
-  // console.log(route.params.userLocation);
   const { placeId } = route.params;
   const [dataResto, setDataResto] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +18,8 @@ export default function RestaurantScreen({
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://10.0.2.2:3200/resto/${placeId}`
+          // `http://10.0.2.2:3200/resto/${placeId}`
+          `https://happy-cow-back-project.herokuapp.com/resto/${placeId}`
         );
         if (response.status === 200) {
           // console.log(response.data);

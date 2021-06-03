@@ -1,13 +1,12 @@
 import React from "react";
 import { View, Image, StyleSheet, ScrollView } from "react-native";
-import { useRoute } from "@react-navigation/core";
 
-export default function GalleryScreen() {
-  const { params } = useRoute();
+export default function GalleryScreen({ route }) {
+  const { images } = route.params;
   return (
     <ScrollView>
       <View style={styles.wrapper}>
-        {params.images.map((image, i) => {
+        {images.map((image, i) => {
           return (
             <View style={styles.item} key={i}>
               <Image
