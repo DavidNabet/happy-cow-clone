@@ -8,17 +8,6 @@ import { colors, border } from "../assets/js/colors";
 export default function MapScreen({ route, data, isLoading }) {
   const { gps } = route.params;
   console.log("gps ", gps);
-  /* 
-
-    latitude: userLocation.location.lat
-    ? userLocation.location.lat
-    : 48.856614,
-  longitude: userLocation.location.lng
-    ? userLocation.location.lng
-    : 2.3522219,
-    -----------------------------------
-   
-  */
 
   return (
     <View style={styles.container}>
@@ -85,6 +74,5 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
-    // flex: 1,
   },
 });

@@ -13,10 +13,15 @@ import { useRoute, useNavigation } from "@react-navigation/core";
 import types from "../seed/types.json";
 import CheckboxComp from "../components/CheckboxComp";
 
-export default function FiltersScreen({ rayon, setRayon, setTypeEl }) {
+export default function FiltersScreen({
+  rayon,
+  setRayon,
+  setTypeEl,
+  typeTab,
+  setTypeTab,
+}) {
   const { params } = useRoute();
   const navigation = useNavigation();
-  const [typeTab, setTypeTab] = useState([]);
 
   const addTypeTab = (type) => {
     const checkType = [...typeTab];
@@ -62,14 +67,10 @@ export default function FiltersScreen({ rayon, setRayon, setTypeEl }) {
         <View style={styles.sections}></View>
       </View>
       <Button
-        title="Reset le filtre des restaurants"
+        title="Voir les résultats des restaurants"
         onPress={() => {
-          // setTypeEl(undefined);
-          navigation.navigate("Tab", {
-            screen: "Home",
-            params: {
-              typeTab,
-            },
+          navigation.goBack("Restaurants", {
+            typeTab,
           });
         }}
       />

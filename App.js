@@ -39,7 +39,7 @@ export default function App() {
   // Filters
   const [typeEl, setTypeEl] = useState(null);
   const [rayon, setRayon] = useState(3);
-  // const [typeObj, setTypeObj] = useState([]);
+  const [typeTab, setTypeTab] = useState([]);
   // Favoris
   const [listFavoris, setListFavoris] = useState([]);
 
@@ -109,8 +109,8 @@ export default function App() {
         const response = await axios.get(`http://10.0.2.2:3200/restaurants`, {
           params: {
             rayon: rayon,
-            limit: 80,
-            type: [typeEl || undefined],
+            limit: 150,
+            type: typeTab.length > 0 ? typeTab : [typeEl || undefined],
           },
           paramsSerializer: (params) => {
             return qs.stringify(params, {
@@ -119,9 +119,8 @@ export default function App() {
             });
           },
         });
-        console.log(typeof response.config.params.type);
+        // console.log(typeof response.config.params.type);
         console.log(response.config.params);
-        // setIsActive(false);
         // setIsLoading(false);
         setIsLoadingResto(false);
         setData(response.data);
@@ -135,7 +134,7 @@ export default function App() {
     if (!isLoading) {
       fetchData();
     }
-  }, [isLoading, typeEl, rayon]);
+  }, [isLoading, typeEl, rayon, typeTab]);
 
   return (
     <NavigationContainer>
@@ -291,6 +290,8 @@ export default function App() {
                           <FiltersScreen
                             {...props}
                             rayon={rayon}
+                            typeTab={typeTab}
+                            setTypeTab={setTypeTab}
                             setRayon={setRayon}
                             setTypeEl={setTypeEl}
                           />

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Checkbox from "expo-checkbox";
 import { View, Text, StyleSheet, Image } from "react-native";
-import { colors, border } from "../assets/js/colors";
 import FilterImage from "./FilterImage";
 
 export default function CheckboxComp({ type, onCheck, id }) {
@@ -17,7 +16,6 @@ export default function CheckboxComp({ type, onCheck, id }) {
         value={isChecked}
         onValueChange={() => {
           setChecked(!isChecked);
-          // onCheck(id, type.type, !isChecked);
           onCheck(type.type);
         }}
       />

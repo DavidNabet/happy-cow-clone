@@ -9,11 +9,10 @@ import {
   StyleSheet,
 } from "react-native";
 import axios from "axios";
-import { colors, border } from "../assets/js/colors";
+import { colors } from "../assets/js/colors";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function SignupScreen({ setTokenAndId, navigation }) {
-  // const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
