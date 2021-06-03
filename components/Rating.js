@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { colors } from "../assets/js/colors";
+import { colors } from "../assets/js/utils";
 
 const Rating = ({ rating }) => {
   const starYellow = (

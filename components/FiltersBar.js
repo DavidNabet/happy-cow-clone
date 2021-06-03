@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colors, border } from "../assets/js/colors";
+import { colors, border } from "../assets/js/utils";
 import { useNavigation } from "@react-navigation/core";
 
 export default function FiltersBar({ typeEl, setTypeEl, data }) {

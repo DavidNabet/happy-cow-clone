@@ -1,5 +1,5 @@
 import React from "react";
-import { border } from "../assets/js/colors";
+import { border } from "../assets/js/utils";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import Rating from "./Rating";

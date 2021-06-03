@@ -7,7 +7,7 @@ import {
   Button,
   ScrollView,
 } from "react-native";
-import { colors, border } from "../assets/js/colors";
+import { colors, border } from "../assets/js/utils";
 import Slider from "@react-native-community/slider";
 import DropDownPicker from "react-native-dropdown-picker";
 import types from "../seed/types.json";

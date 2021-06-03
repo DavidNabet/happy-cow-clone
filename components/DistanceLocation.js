@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { colors } from "../assets/js/colors";
+import { colors } from "../assets/js/utils";
 import { distance } from "../utils/distance";
 export default function DistanceLocation({ data, userLocation }) {
   const dist = () => {

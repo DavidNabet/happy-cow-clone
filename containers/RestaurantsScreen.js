@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import axios from "axios";
-import { colors } from "../assets/js/colors";
+import { colors } from "../assets/js/utils";
 import {
   View,
   Text,

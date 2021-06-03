@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import axios from "axios";
-import { colors } from "../assets/js/colors";
+import { colors } from "../assets/js/utils";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function SignupScreen({ setTokenAndId, navigation }) {

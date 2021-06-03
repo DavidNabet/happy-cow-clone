@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { colors, border } from "../assets/js/colors";
+import { colors, markerColorType } from "../assets/js/utils";
 // import FilterImage from "../components/FilterImage";
 export default function MapScreen({ route, data, isLoading }) {
   const { gps } = route.params;
@@ -35,7 +35,6 @@ export default function MapScreen({ route, data, isLoading }) {
           toolbarEnabled={true}
         >
           {data.map((marker) => {
-            let type = marker.type;
             return (
               <Marker
                 key={marker.placeId}
@@ -45,6 +44,7 @@ export default function MapScreen({ route, data, isLoading }) {
                 }}
                 title={marker.name}
                 description={marker.description}
+                pinColor={markerColorType(marker.type)}
               />
             );
           })}

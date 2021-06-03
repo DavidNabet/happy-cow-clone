@@ -15,7 +15,7 @@ import {
 //librairies
 import axios from "axios";
 import qs from "qs";
-import { colors, getColor } from "./assets/js/colors";
+import { colors, getColor } from "./assets/js/utils";
 // containers
 import RestaurantsScreen from "./containers/RestaurantsScreen";
 import RestaurantScreen from "./containers/RestaurantScreen";
@@ -25,6 +25,7 @@ import LoginScreen from "./containers/LoginScreen";
 import SignupScreen from "./containers/SignupScreen";
 import FiltersScreen from "./containers/FiltersScreen";
 import GalleryScreen from "./containers/GalleryScreen";
+import SplashScreen from "./containers/SplashScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -123,6 +124,7 @@ export default function App() {
         console.log(rayon);
         console.log(typeEl);
       } catch (error) {
+        console.log("restaurants", error.response);
         console.log("restaurants ", error.message);
       }
     };
@@ -133,7 +135,9 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {isLoading ? null : userTokenAndId === null ? (
+      {isLoading ? (
+        <Stack.Screen name="splash">{() => <SplashScreen />}</Stack.Screen>
+      ) : userTokenAndId === null ? (
         <Stack.Navigator>
           <Stack.Screen name="SignUp">
             {(props) => (
@@ -149,15 +153,13 @@ export default function App() {
       ) : (
         <Stack.Navigator>
           <Stack.Screen name="Tab" options={{ headerShown: false }}>
-            {(props) => (
+            {() => (
               <Tab.Navigator
                 tabBarOptions={{
                   activeTintColor: colors.purpleContainer,
                   inactiveTintColor: "gray",
                 }}
               >
-                {console.log(props.route.params)}
-
                 <Tab.Screen
                   name="Home"
                   options={{

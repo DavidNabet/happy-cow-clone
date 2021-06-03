@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { border, colors, getColor } from "../assets/js/colors";
+import { border, colors, getColor } from "../assets/js/utils";
 import {
   FontAwesome5,
   MaterialCommunityIcons,

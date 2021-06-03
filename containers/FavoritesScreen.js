@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { colors } from "../assets/js/colors";
+import { colors } from "../assets/js/utils";
 // liste des favoris
 export default function FavoritesScreen({ navigation, route }) {
   // Pas d'autre choix que de stocker l'async storage dans un state

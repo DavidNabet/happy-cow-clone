@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import axios from "axios";
-import { border, colors } from "../assets/js/colors";
+import { border, colors } from "../assets/js/utils";
 
 import RestaurantCard from "../components/RestaurantCard";
 export default function RestaurantScreen({

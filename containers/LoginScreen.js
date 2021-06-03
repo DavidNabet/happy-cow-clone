@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import axios from "axios";
-import { colors, border } from "../assets/js/colors";
+import { colors, border } from "../assets/js/utils";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // import * as Location from "expo-location";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { colors, border } from "../assets/js/colors";
+import { colors, border } from "../assets/js/utils";
 
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
