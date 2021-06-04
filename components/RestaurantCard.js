@@ -254,6 +254,11 @@ export default function RestaurantCard({
               </MapView>
             </View>
             <View style={styles.margin}>
+              {dataResto.address !== undefined && (
+                <Text style={styles.description}>{dataResto.address}</Text>
+              )}
+            </View>
+            <View style={styles.margin}>
               {dataResto.description !== null &&
               dataResto.description !== undefined ? (
                 <Text style={styles.description}>

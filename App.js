@@ -139,7 +139,7 @@ export default function App() {
   return (
     <NavigationContainer>
       {isLoading ? (
-        <Stack.Screen name="splash">{() => <SplashScreen />}</Stack.Screen>
+        <Stack.Screen name="splash" component={SplashScreen} />
       ) : userTokenAndId === null ? (
         <Stack.Navigator>
           <Stack.Screen name="SignUp">

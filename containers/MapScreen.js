@@ -43,7 +43,7 @@ export default function MapScreen({ route, data, isLoading }) {
                   longitude: marker.location.lng,
                 }}
                 title={marker.name}
-                description={marker.description}
+                description={marker.address}
                 pinColor={markerColorType(marker.type)}
               />
             );

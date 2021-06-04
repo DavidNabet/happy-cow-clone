@@ -6,8 +6,11 @@ import {
   StyleSheet,
   FlatList,
   ActivityIndicator,
+  TouchableOpacity,
   SafeAreaView,
   Platform,
+  Linking,
+  View,
 } from "react-native";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
@@ -73,7 +76,7 @@ export default function RestaurantsScreen({
         setLocation(setResponse);
       } else {
         setErrorMessageLocation(
-          "La permission pour accéder à la géolocalisation a échoué\nAller dans vos paramètres, activer la localisation"
+          "La permission pour accéder à la géolocalisation a échoué. Allez dans vos paramètres, activer la localisation"
         );
       }
     };
@@ -91,6 +94,10 @@ export default function RestaurantsScreen({
     });
   };
 
+  const handlePressLocation = async () => {
+    await Linking.openSettings();
+  };
+
   const renderItem = useCallback(
     ({ item }) => <RestaurantsCard data={item} userLocation={userLocation} />,
     []
@@ -103,7 +110,24 @@ export default function RestaurantsScreen({
       style={{ marginTop: 50 }}
     />
   ) : errorMessageLocation ? (
-    <Text style={styles.error}>{errorMessageLocation}</Text>
+    <View style={styles.containerError}>
+      <Text style={styles.error}>{errorMessageLocation}</Text>
+      <TouchableOpacity
+        style={styles.buttonError}
+        onPress={handlePressLocation}
+      >
+        <Text
+          style={{
+            color: "white",
+            textTransform: "uppercase",
+            fontSize: 16,
+            textAlign: "center",
+          }}
+        >
+          Allez aux paramètres
+        </Text>
+      </TouchableOpacity>
+    </View>
   ) : (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" backgroundColor={colors.purpleStatusBar} />
@@ -144,9 +168,24 @@ const styles = StyleSheet.create({
   scrollView: {
     marginTop: Platform.OS === "android" ? Constants.statusBarHeight : 0,
   },
+  containerError: {
+    height: "100%",
+    marginHorizontal: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "auto",
+  },
   error: {
     fontSize: 20,
-    color: colors.vegOptions,
-    fontWeight: "bold",
+    color: colors.MarketVendor,
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  buttonError: {
+    width: "100%",
+    padding: 8,
+    marginVertical: 5,
+    borderRadius: 5,
+    backgroundColor: colors.purpleStatusBar,
   },
 });

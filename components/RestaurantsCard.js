@@ -1,5 +1,5 @@
 import React from "react";
-import { border } from "../assets/js/utils";
+import { border, colors } from "../assets/js/utils";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import Rating from "./Rating";
@@ -32,7 +32,22 @@ export default function RestaurantsCard({ data, userLocation }) {
               <Text style={styles.title} numberOfLines={1}>
                 {data.name.slice(0, 25) + "..."}
               </Text>
-              <FilterImage type={data.type} />
+              <View style={{ position: "relative" }}>
+                {data.vegOnly === 1 && (
+                  <View style={styles.vegan}>
+                    <Text
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        lineHeight: 16,
+                      }}
+                    >
+                      v
+                    </Text>
+                  </View>
+                )}
+                <FilterImage type={data.type} />
+              </View>
             </View>
             <View style={styles.sub_block}>
               <Rating rating={Number(data.rating)} />
@@ -101,8 +116,14 @@ const styles = StyleSheet.create({
     color: "black",
     width: "100%",
   },
-  image: {
-    width: 20,
-    height: 20,
+  vegan: {
+    position: "absolute",
+    top: 0,
+    left: -5,
+    zIndex: 9,
+    width: 15,
+    height: 15,
+    backgroundColor: colors.Professional,
+    borderRadius: 50,
   },
 });
