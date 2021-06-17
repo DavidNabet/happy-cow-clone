@@ -12,8 +12,8 @@ import { colors } from "../assets/js/utils";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function LoginScreen({ setTokenAndId, navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("john@doe.com");
+  const [password, setPassword] = useState("pass");
   const [errorMessage, setErrorMessage] = useState("");
   // const [errors, setErrors] = useState(false);
 

@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  Text,
+  Dimensions,
+} from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { colors, markerColorType } from "../assets/js/utils";
 // import FilterImage from "../components/FilterImage";
@@ -45,7 +51,9 @@ export default function MapScreen({ route, data, isLoading }) {
                 title={marker.name}
                 description={marker.address}
                 pinColor={markerColorType(marker.type)}
-              />
+              >
+                {/* <FilterImage type={marker.type} /> */}
+              </Marker>
             );
           })}
         </MapView>
@@ -70,7 +78,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   map: {
-    width: "100%",
-    height: "100%",
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 });
