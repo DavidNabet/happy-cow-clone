@@ -25,9 +25,9 @@ The project was completed in 2 weeks from a json file, had to receive and proces
 - [React Native Async Storage](https://react-native-async-storage.github.io/async-storage/)
 
 ## Screenshots
-![login](https://res.cloudinary.com/dkigh7ogm/image/upload/c_thumb,w_200,g_face/v1623938637/login.png)
-![home](https://res.cloudinary.com/dkigh7ogm/image/upload/c_thumb,w_200,g_face/v1623938643/home.png)
-![filters](https://res.cloudinary.com/dkigh7ogm/image/upload/c_thumb,w_200,g_face/v1623938639/filters.png)
-![vegan_filtering](https://res.cloudinary.com/dkigh7ogm/image/upload/c_thumb,w_200,g_face/v1623938644/vegan_filtering.png)
-![around-me](https://res.cloudinary.com/dkigh7ogm/image/upload/c_thumb,w_200,g_face/v1623938645/around-me.png)
-![gallery](https://res.cloudinary.com/dkigh7ogm/image/upload/c_thumb,w_200,g_face/v1623938649/gallery.png)
+![login](https://raw.githubusercontent.com/DavidNabet/happy-cow-clone/main/assets/preview/login.png)
+![home](https://raw.githubusercontent.com/DavidNabet/happy-cow-clone/main/assets/preview/home.png)
+![filters](https://raw.githubusercontent.com/DavidNabet/happy-cow-clone/main/assets/preview/filters.png)
+![vegan_filtering](https://raw.githubusercontent.com/DavidNabet/happy-cow-clone/main/assets/preview/vegan_filtering.png)
+![around-me](https://raw.githubusercontent.com/DavidNabet/happy-cow-clone/main/assets/preview/around-me.png)
+![gallery](https://raw.githubusercontent.com/DavidNabet/happy-cow-clone/main/assets/preview/gallery.png)
