@@ -19,7 +19,8 @@ export default function FiltersBar({ typeEl, setTypeEl, data }) {
           ]}
           onPress={() => {
             setIsPressedVegan(!isPressedVegan);
-            if (isPressedVegan) {
+            if (!!isPressedVegan) {
+              // setTypeTab(new Set({...typeEl, "vegan"}))
               setTypeEl("vegan");
             } else {
               setTypeEl(undefined);
@@ -40,7 +41,7 @@ export default function FiltersBar({ typeEl, setTypeEl, data }) {
           ]}
           onPress={() => {
             setIsPressedVegetarian(!isPressedVegetarian);
-            if (isPressedVegetarian) {
+            if (!!isPressedVegetarian) {
               setTypeEl("vegetarian");
             } else {
               setTypeEl(undefined);
@@ -61,7 +62,7 @@ export default function FiltersBar({ typeEl, setTypeEl, data }) {
           ]}
           onPress={() => {
             setIsPressedVegOptions(!isPressedVegOptions);
-            if (isPressedVegOptions) {
+            if (!!isPressedVegOptions) {
               setTypeEl("veg-options");
             } else {
               setTypeEl(undefined);

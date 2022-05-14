@@ -12,16 +12,16 @@ import { colors } from "../assets/js/utils";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function LoginScreen({ setTokenAndId, navigation }) {
-  const [email, setEmail] = useState("john@doe.com");
-  const [password, setPassword] = useState("pass");
+  const [email, setEmail] = useState("john@test.io"); //john@doe.com
+  const [password, setPassword] = useState("user"); //pass
   const [errorMessage, setErrorMessage] = useState("");
   // const [errors, setErrors] = useState(false);
 
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        // "http://10.0.2.2:3200/user/login",
-        "https://happy-cow-back-project.herokuapp.com/user/login",
+        "http://10.0.2.2:3200/user/login",
+        // "https://happy-cow-back-project.herokuapp.com/user/login",
         {
           email: email,
           password: password,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import axios from "axios";
 import { colors } from "../assets/js/utils";
 import {
@@ -33,8 +33,11 @@ export default function RestaurantsScreen({
   // search
   const [isActive, setIsActive] = useState(false);
   const [search, setSearch] = useState("");
+  // unmounted
+  const isMounted = useRef();
 
   useEffect(() => {
+    isMounted.current = true;
     const getPermissionAndLocation = async () => {
       const tokenId = await AsyncStorage.getItem("userTokenAndId");
       const user = JSON.parse(tokenId);
@@ -42,7 +45,7 @@ export default function RestaurantsScreen({
       const { status, canAskAgain } =
         await Location.requestForegroundPermissionsAsync();
       console.log(status);
-      if (status === "granted") {
+      if (status === "granted" && isMounted.current) {
         // setErrors(true)
         const { coords } = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.Highest,
@@ -52,8 +55,8 @@ export default function RestaurantsScreen({
 
         try {
           await axios.put(
-            // `http://10.0.2.2:3200/user/update/${user.id}`,
-            `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
+            `http://10.0.2.2:3200/user/update/${user.id}`,
+            // `https://happy-cow-back-project.herokuapp.com/user/update/${user.id}`,
             {
               location: tabCoordinate,
             },
@@ -81,12 +84,15 @@ export default function RestaurantsScreen({
       }
     };
     getPermissionAndLocation();
+
+    return () => isMounted.current = false;
+
   }, []);
 
   const filterText = (searchText) => {
     setIsActive(false);
     return data.filter((data) => {
-      if (data.name.toLowerCase().includes(searchText.toLowerCase())) {
+      if (data.name.toLowerCase().startsWith(searchText.toLowerCase())) {
         setIsActive(true);
         return true;
       }

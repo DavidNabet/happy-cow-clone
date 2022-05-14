@@ -94,7 +94,7 @@ export default function App() {
       setUserTokenAndId(userTokenAndId);
       console.log("favoris", fav);
 
-      console.log("location root ", userLocation);
+      console.log("location user ", userLocation);
     };
 
     bootstrapAsync();
@@ -104,28 +104,31 @@ export default function App() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          // `http://10.0.2.2:3200/restaurants`,
-          `https://happy-cow-back-project.herokuapp.com/restaurants`,
+          `http://10.0.2.2:3200/restaurants`,
+          // `https://happy-cow-back-project.herokuapp.com/restaurants`,
           {
             params: {
               rayon: rayon,
               limit: limit,
               type: typeTab.length > 0 ? typeTab : [typeEl || undefined],
             },
+            // typeTab: {type: [typeEl.vegan, typeEl.vegetarian, typeEl.veg-options]}
             paramsSerializer: (params) => {
               return qs.stringify(params, {
-                arrayFormat: "repeat",
+                arrayFormat: "brackets",
                 encode: false,
               });
             },
           }
         );
         // console.log(typeof response.config.params.type);
-        console.log(response.config.params);
+        console.log("------------| start |------------");
+        console.log("params ", response.config.params);
         setIsLoadingResto(false);
         setData(response.data);
-        console.log(rayon);
-        console.log(typeEl);
+        console.log("rayon ", rayon);
+        console.log("typeEl ", typeEl);
+        console.log("------------| end |------------");
       } catch (error) {
         console.log("restaurants", error.response);
         console.log("restaurants ", error.message);

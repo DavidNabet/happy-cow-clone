@@ -51,6 +51,7 @@ const getColor = (type) => {
 };
 
 const markerColorType = (type) => {
+  let color;
   if (type === "veg-options") {
     return (color = "tomato");
   } else if (type === "vegan") {
@@ -64,7 +65,7 @@ const markerColorType = (type) => {
   } else if (type === "Other") {
     return (color = "linen");
   } else if (type === "Health Store") {
-    return (color = "white");
+    return (color = "gold");
   } else if (type === "Organization") {
     return (color = "tan");
   } else if (type === "Professional") {

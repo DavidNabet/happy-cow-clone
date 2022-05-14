@@ -46,7 +46,8 @@ export default function RestaurantsCard({ data, userLocation }) {
                     </Text>
                   </View>
                 )}
-                <FilterImage type={data.type} />
+                {/* <FilterImage type={data.type} /> */}
+                {FilterImage(data.type)}
               </View>
             </View>
             <View style={styles.sub_block}>

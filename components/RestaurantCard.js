@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Image,
   Text,
@@ -32,15 +32,17 @@ export default function RestaurantCard({
 }) {
   const [favoris, setFavoris] = useState("gray");
   const [coords, setCoords] = useState({});
+  const isMounted = useRef(false);
   // Si les favoris existes, on les appelle depuis l'Async Storage
   useEffect(() => {
+    isMounted.current = true;
     const isFavorisExist = async () => {
       const fav = await AsyncStorage.getItem("fav");
       const userFav = JSON.parse(fav);
       if (fav !== null && fav !== undefined) {
         console.log("userFav ", userFav);
         if (userFav.some((item) => item.placeId === dataResto.placeId)) {
-          if (dataResto.placeId === id) {
+          if (isMounted.current && dataResto.placeId === id) {
             setFavoris(!favoris);
           }
         }
@@ -49,6 +51,7 @@ export default function RestaurantCard({
       }
     };
     isFavorisExist();
+    return () => (isMounted.current = false);
   }, [id]);
 
   useEffect(() => {
@@ -150,7 +153,7 @@ export default function RestaurantCard({
               <View style={styles.row}>
                 <Text style={styles.title}>{dataResto.name}</Text>
                 <View style={styles.image}>
-                  <FilterImage type={dataResto.type} large />
+                  {FilterImage(dataResto.type, "large")}
                 </View>
               </View>
               <View style={styles.row}>
@@ -238,7 +241,6 @@ export default function RestaurantCard({
                 minZoomLevel={10}
                 maxZoomLevel={15}
                 zoomEnabled={true}
-                zoomEnabled={true}
                 zoomTapEnabled={true}
               >
                 {dataResto.location !== undefined && (
@@ -248,7 +250,8 @@ export default function RestaurantCard({
                       longitude: dataResto.location.lng,
                     }}
                   >
-                    <FilterImage type={dataResto.type} />
+                    {/* <FilterImage type={dataResto.type} /> */}
+                    {FilterImage(dataResto.type)}
                   </Marker>
                 )}
               </MapView>

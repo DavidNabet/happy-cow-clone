@@ -16,7 +16,7 @@ export default function FavoritesScreen({ navigation, route }) {
 
   useEffect(() => {
     const awaitStorage = async () => {
-      let fav = await AsyncStorage.getItem("fav");
+      const fav = await AsyncStorage.getItem("fav");
       let favTab = fav ? JSON.parse(fav) : [];
       setStore(favTab);
     };

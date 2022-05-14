@@ -6,19 +6,24 @@ import FilterImage from "./FilterImage";
 export default function CheckboxComp({ type, onCheck }) {
   const [isChecked, setChecked] = useState(false);
 
+  // AsyncStorage("paramsFilters")
+  // Au prochain chargement paramsFilters est appelé
+  // Context pour garder les paramètres enregistrés
+  // [...params.type, type.type]
+
+  const handleCheck = () => {
+    setChecked(!isChecked);
+    onCheck(type.type);
+  };
+
   return (
     <View style={styles.checkbox}>
       <View style={styles.img_title}>
-        <FilterImage type={type.type} large />
+        {/* <FilterImage type={type.type} large /> */}
+        {FilterImage(type.type, "large")}
         <Text style={{ marginHorizontal: 5 }}>{type.name}</Text>
       </View>
-      <Checkbox
-        value={isChecked}
-        onValueChange={() => {
-          setChecked(!isChecked);
-          onCheck(type.type);
-        }}
-      />
+      <Checkbox value={isChecked} onValueChange={handleCheck} />
     </View>
   );
 }

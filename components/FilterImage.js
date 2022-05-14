@@ -1,70 +1,165 @@
 import React from "react";
-import { Image, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import types from "../seed/types.json";
+import {
+  Vegan,
+  Vegetarian,
+  VegOptions,
+  HealthStore,
+  VegStore,
+  Bakery,
+  Delivery,
+  Catering,
+  Organization,
+  FoodTruck,
+  MarketVendor,
+  IceCream,
+  JuiceBar,
+  Professional,
+  Other,
+} from "../seed/svgIcon";
 
-export default function FilterImage({ type, large }) {
+export default function FilterImage(type, large) {
   const typeEl = types.filter((el, i) => el.type === type);
-  let path;
+  // let path;
   if (type !== undefined) {
     switch (typeEl[0].type) {
       case "vegan":
-        path = require("../assets/png/vegan.png");
-        break;
+        return large ? (
+          <Vegan width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <Vegan width={styles.small.width} height={styles.small.height} />
+        );
       case "vegetarian":
-        path = require("../assets/png/vegetarian.png");
-        break;
+        return large ? (
+          <Vegetarian width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <Vegetarian width={styles.small.width} height={styles.small.height} />
+        );
+
       case "veg-options":
-        path = require("../assets/png/veg-options.png");
-        break;
+        return large ? (
+          <VegOptions width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <VegOptions width={styles.small.width} height={styles.small.height} />
+        );
+
       case "Health Store":
-        path = require("../assets/png/health-store.png");
-        break;
+        return large ? (
+          <HealthStore
+            width={styles.large.width}
+            height={styles.large.height}
+          />
+        ) : (
+          <HealthStore
+            width={styles.small.width}
+            height={styles.small.height}
+          />
+        );
+
       case "Veg Store":
-        path = require("../assets/png/veg-store.png");
-        break;
+        return large ? (
+          <VegStore width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <VegStore width={styles.small.width} height={styles.small.height} />
+        );
+
       case "Bakery":
-        path = require("../assets/png/bakery.png");
-        break;
+        return large ? (
+          <Bakery width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <Bakery width={styles.small.width} height={styles.small.height} />
+        );
+
       case "Delivery":
-        path = require("../assets/png/delivery.png");
-        break;
+        return large ? (
+          <Delivery width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <Delivery width={styles.small.width} height={styles.small.height} />
+        );
+
       case "Catering":
-        path = require("../assets/png/catering.png");
-        break;
+        return large ? (
+          <Catering width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <Catering width={styles.small.width} height={styles.small.height} />
+        );
+
       case "Organization":
-        path = require("../assets/png/organization.png");
-        break;
+        return large ? (
+          <Organization
+            width={styles.large.width}
+            height={styles.large.height}
+          />
+        ) : (
+          <Organization
+            width={styles.small.width}
+            height={styles.small.height}
+          />
+        );
+
       case "Food Truck":
-        path = require("../assets/png/food-truck.png");
-        break;
+        return large ? (
+          <FoodTruck width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <FoodTruck width={styles.small.width} height={styles.small.height} />
+        );
+
       case "Market Vendor":
-        path = require("../assets/png/market-vendor.png");
-        break;
+        return large ? (
+          <MarketVendor
+            width={styles.large.width}
+            height={styles.large.height}
+          />
+        ) : (
+          <MarketVendor
+            width={styles.small.width}
+            height={styles.small.height}
+          />
+        );
+
       case "Ice Cream":
-        path = require("../assets/png/ice-cream.png");
-        break;
+        return large ? (
+          <IceCream width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <IceCream width={styles.small.width} height={styles.small.height} />
+        );
+
       case "Juice Bar":
-        path = require("../assets/png/juice-bar.png");
-        break;
+        return large ? (
+          <JuiceBar width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <JuiceBar width={styles.small.width} height={styles.small.height} />
+        );
+
       case "Professional":
-        path = require("../assets/png/vegan-professional.png");
-        break;
+        return large ? (
+          <Professional
+            width={styles.large.width}
+            height={styles.large.height}
+          />
+        ) : (
+          <Professional
+            width={styles.small.width}
+            height={styles.small.height}
+          />
+        );
+
       case "Other":
-        path = require("../assets/png/other.png");
-        break;
+        return large ? (
+          <Other width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <Other width={styles.small.width} height={styles.small.height} />
+        );
+
       default:
-        path = require("../assets/png/other.png");
-        break;
+        return large ? (
+          <Other width={styles.large.width} height={styles.large.height} />
+        ) : (
+          <Other width={styles.small.width} height={styles.small.height} />
+        );
     }
   }
-
-  return (
-    <Image
-      source={path}
-      style={large ? styles.large : styles.small}
-      resizeMode="contain"
-    />
-  );
 }
 
 const styles = StyleSheet.create({
